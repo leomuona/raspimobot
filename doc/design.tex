@@ -1,0 +1,33 @@
+\documentclass[english,11pt,twoside,a4paper]{article}
+\usepackage[left=2cm,top=1cm,right=2cm,nohead,nofoot]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\begin{document}
+\author{
+  Niemistö, Jesse
+  \and
+  Muona, Leo
+  \and
+  Hilden, Matias
+}
+\title{Conceptual Design}
+
+\maketitle
+
+Our aim in this project is to make a turret, which aims moving targets with laser pointer, and makes appropriate noises. This means that the turret will have following parts:
+
+\begin{itemize}
+  \item Raspberry pi, the main controller, holds the main software, under Linux.
+  \item Two motors \url{http://www.kouluelektroniikka.fi/cgi-bin/shop.cg?action=prodshow\&usr=3qienj42dm87vuhhkuuv9nst84\&prodid=5561\%20545}, one for horizontal tracking and one for vertical tracking.
+  \item Motor control circuit (L293D), is able to control both motors.
+  \item Camera (Raspberry Pi NoIR ccd camera module 5MPx), is used for tracking movements.
+  \item Circuit board, for connections.
+  \item Speaker, \url{http://www.partco.biz/verkkokauppa/product\_info.php?cath=17\_1440\_1916\&products\_id=1086}
+  \item Audio amplifier
+\end{itemize}
+
+Inspiration for the project is the game Portal by Valve. 
+
+\end{document}
