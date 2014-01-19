@@ -27,7 +27,7 @@ Our aim in this project is to make a turret, which aims moving targets with lase
   \item Camera (Raspberry Pi NoIR ccd camera module 5MPx), which is used for tracking movements.
   \item Circuit board, which is used for connections.
   \item Speaker (\url{http://www.partco.biz/verkkokauppa/product\_info.php?cath=17\_1440\_1916\&products\_id=1086})
-  \item Audio amplifier, which is used with the speaker to produce audio output.
+  \item Audio amplifier, (LM386, something like \href{http://www.youtube.com/watch?v=3KyBrAoHMX8}{this}) which is used with the speaker to produce audio output.
 \end{itemize}
 
 Our initial design consists of a static base, which has a horizontally rotating platform on top of it. This platform is rotated via one DC motor. On the platform we plan to mount the second DC motor, which has a laser pointer's base attached to it. This base is rotated vertically. Both DC motors are controlled by the Raspberry Pi via motor control circuit L293D.
