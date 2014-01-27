@@ -310,5 +310,5 @@ quit:
 
 int is_playing()
 {
-	return is_playing;
+	return playing;
 }
