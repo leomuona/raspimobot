@@ -1,16 +1,23 @@
-#include <stdio.h>
 
 #include "audio.h"
 #include "camera.h"
 #include "motor.h"
 
-int main()
+#include <stdio.h>
+#include <unistd.h>
+
+int main(int argc, char **argv)
 {
 	printf("Hello world\n");
 
 	take_pic();
 
-	play_sound();
+	if (argc >= 2 && play_sound(argv[1]) == 0) {
+		while (is_playing()) {
+			sleep(10);
+			printf("Still playing...\n");
+		}
+	}
 
 	move_x();
 	move_y();
