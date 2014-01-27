@@ -100,7 +100,7 @@ static void stream_write_callback(pa_stream *s, size_t length, void *userdata)
 	if (bytes < (sf_count_t) length) {
 		sf_close(ctx->sndfile);
 		ctx->sndfile = NULL;
-		pa_operation_unref(pa_stream_drain(s, stream_drain_complete, NULL));
+		pa_operation_unref(pa_stream_drain(s, stream_drain_complete, userdata));
 	}
 
 }
