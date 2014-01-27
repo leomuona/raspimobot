@@ -1,6 +1,13 @@
-#ifndef AUDIO_H_
-#define AUDIO_H_
+#ifndef AUDIO_H
+#define AUDIO_H
 
-void play_sound();
+/**
+ * Play given sound file (WAV).
+ *
+ * @param filename fo the file.
+ *
+ * @return asd
+ */
+int play_sound(const char *filename);
 
-#endif
+#endif // AUDIO_H

@@ -10,7 +10,7 @@ int main()
 
 	take_pic();
 
-	play_sound();
+	play_sound("01.wav");
 
 	move_x();
 	move_y();
