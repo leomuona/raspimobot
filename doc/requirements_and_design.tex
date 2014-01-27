@@ -22,6 +22,7 @@ This document includes requirements, features and design of our turret for Intel
 \section{Features}
 TODO
 - fancy use case picture?
+- or should we just copy paste stuff from design.tex?
 
 \section{Audio}
 
@@ -55,7 +56,34 @@ Raspberry Pi Camera Board (https://www.element14.com/picamera) will be used for 
 Raspberry Pi has a camera socket intended for the camera, so no other electronic components are required in addition to the camera.
 
 \section{Motors}
-TODO
+Lets assume that the turret has a weapon. In implementation the weapon will probably be either a laser pointer or an LED light. Moving the aim into correct position is done by two small DC motors, one for horizontal and one for vertical movement. Raspberry Pi will be controlling the motors via it's PCIO pins.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{motor_controllers_l293d_bb.png}
+    \caption{Breadboard view for motor controllers.}
+  \end{center}
+  \label{l293d_bb}
+\end{figure}
+
+Our design uses two L293D motor controller chips for controlling the two motors. The breadboard design in figure \ref{l293d_bb} visualizes more closely on how the L293D chips are connected to Raspberry Pi, motors and additional battery power supply. The design shows how Raspberry Pi's GPIO pins 17 and 18 are used to control the first DC motor, and pins 22 and 23 are used to control the second one. L293D chips will get their VCC1 powers from the 5V Raspberry Pi pin, and their enable powers from the same pin, but trough 10 kilo ohm resistors. The motors will use power from two AA batteries, that give total of 3V voltage for the motors. Power for the motors are given through L293D chip's VCC2 pin.
+
+A compact list for L293D chip's pin usage is the following:
+\begin{itemize}
+\item Pin 1: Enable signal for control signals \#1 and \#2.
+\item Pin 2: Control signal \#1 input from Raspberry Pi.
+\item Pin 3: Output current \#1 for the DC motor.
+\item Pins 4-5: Ground 0V.
+\item Pin 6: Control signal \#2 input from Raspberry Pi.
+\item Pin 7: Output current \#2 for the DC motor.
+\item Pin 8: VCC2 input, this is the motor's power current.
+\item Pins 12-13: Ground 0V.
+\item Pin 16: VCC1 power current for the 293D chip.
+\end{itemize}
+
+L293D motor control chip makes the DC motor turn left and right when control signals \#1 and \#2 from Raspberry Pi are in different states. If both of them are either low or high, the motor is stopped.
+
+In order to test this design, we will code a simple testing software that gives correct signals from correct Raspberry Pi pins. After the software and signals are tested, then we will attach motor control chips into test bench to test how electronics work while connected. Only after these steps we can assemble our turret's mechanical parts.
 
 \section{Software}
 In addition to camera software provided by Raspberry Pi, we will write our own software for image analysis (motion detection), audio playback and motor movement. We will also write a remote control software for testing purposes at some point.
