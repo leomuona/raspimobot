@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <signal.h>
 #include <string.h>
 
 #include <sndfile.h>
@@ -22,11 +23,35 @@ struct PAContext
 	pa_stream *stream;
 	pa_sample_spec sample_spec;
 
-        SNDFILE *sndfile;
+	SNDFILE *sndfile;
 	sf_count_t (*readf_function)(SNDFILE *_sndfile, void *ptr, sf_count_t frames);
+
+	char *filename;
 };
 
 typedef struct PAContext PAContext;
+
+static void pa_context_cleanup(PAContext *ctx)
+{
+	if (ctx->stream) {
+		pa_stream_unref(ctx->stream);
+	}
+
+	if (ctx->context) {
+		pa_context_unref(ctx->context);
+	}
+
+	if (ctx->main) {
+		pa_signal_done();
+		pa_mainloop_free(ctx->main);
+	}
+
+	if (ctx->filename) {
+		free(ctx->filename);
+	}
+
+	free(ctx);
+}
 
 static void quit(int ret, PAContext *ctx)
 {
@@ -221,18 +246,9 @@ static void *play(void *arg)
 		fprintf(stderr, "pa_mainloop_run() failed.\n");
 	}
 
-	if (ctx->stream)
-		pa_stream_unref(ctx->stream);
+	fprintf(stdout, "Finished track: %s\n", ctx->filename);
 
-	if (ctx->context)
-		pa_context_unref(ctx->context);
-
-	if (ctx->main) {
-		pa_signal_done();
-		pa_mainloop_free(ctx->main);
-	}
-
-	free(ctx);
+	pa_context_cleanup(ctx);
 	playing = 0;
 }
 
@@ -243,6 +259,9 @@ int play_sound(const char *filename)
 
 	struct PAContext *ctx = malloc(sizeof(PAContext));
 	memset(ctx, 0, sizeof(PAContext));
+
+	ctx->filename = malloc(strlen(filename));
+	strncpy(ctx->filename, filename, strlen(filename));
 
 	memset(&sfinfo, 0, sizeof(sfinfo));
 	ctx->sndfile = sf_open(filename, SFM_READ, &sfinfo);
@@ -289,22 +308,12 @@ int play_sound(const char *filename)
 		goto quit;
 	}
 
-	ret = 0;
 	playing = 1;
+	ret = 0;
 	return ret;
 
 quit:
-	if (ctx->stream)
-		pa_stream_unref(ctx->stream);
-
-	if (ctx->context)
-		pa_context_unref(ctx->context);
-
-	if (ctx->main) {
-		pa_signal_done();
-		pa_mainloop_free(ctx->main);
-	}
-
+	pa_context_cleanup(ctx);
 	return ret;
 }
 
