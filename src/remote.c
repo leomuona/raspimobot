@@ -21,7 +21,7 @@ int f_listen = 0;
 int remote_init()
 {
 	if (f_listen){
-		printf("ERROR initializing remote control, already listening\n");
+		printf("ERROR initializing remote control, already listening");
 		return -1;
 	}
 	f_listen = 1;
@@ -35,7 +35,7 @@ int remote_listen()
 {
 	int socket_desc = socket(AF_INET, SOCK_STREAM, 0);
 	if (socket_desc < 0){
-		printf("ERROR opening socket\n");
+		perror("ERROR opening socket");
 		return -1;
 	}
 
@@ -48,7 +48,7 @@ int remote_listen()
 
 	if (bind(socket_desc, (struct sockaddr *) &server_addr, 
 		sizeof(server_addr)) < 0){
-		printf("ERROR binding socket to port %d\n", PORT);
+		perror("ERROR binding socket");
 		return -1;
 	}
 
@@ -61,18 +61,25 @@ int remote_listen()
 			&clilen);
 
 		if (new_socket_desc < 0){
-			printf("ERROR accepting client\n");
+			perror("ERROR accepting client");
 			return -1;
 		}
 
 		char buffer[BUFFER_SIZE];
 		memset(&buffer, 0, BUFFER_SIZE);
-		int n;
+		int n = 0;
 
-		// loop until eol
-		while ((n == read(new_socket_desc, buffer, BUFFER_SIZE)) > 0){
-			// TODO parse input to control command
-			printf("%s\n", buffer);
+		int listen_client = 1;
+		while (listen_client){
+			n = read(new_socket_desc, buffer, BUFFER_SIZE);
+			if (n == BUFFER_SIZE){
+				// too long, close
+				listen_client = 0;
+			}
+			else if (strcmp(buffer, "exit\n") == 0){
+				listen_client = 0;
+			}
+			printf("%s", buffer);
 		}
 
 		close(new_socket_desc);
