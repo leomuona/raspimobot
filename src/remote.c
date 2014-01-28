@@ -12,7 +12,7 @@
 #include <pthread.h>
 #include <string.h>
 
-#define PORT 555
+#define PORT 5555
 #define BUFFER_SIZE 16
 
 pthread_t thread;
