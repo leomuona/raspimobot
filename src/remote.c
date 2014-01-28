@@ -13,7 +13,7 @@
 #include <string.h>
 
 #define PORT 555
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 16
 
 pthread_t thread;
 int f_listen = 0;
@@ -57,8 +57,8 @@ int remote_listen()
 		listen(socket_desc, 5);
 
 		socklen_t clilen = sizeof(client_addr);
-		int new_socket_desc = accept(socket_desc, (struct sockaddr *) &client_addr, 
-			&clilen);
+		int new_socket_desc = accept(socket_desc, 
+			(struct sockaddr *) &client_addr, &clilen);
 
 		if (new_socket_desc < 0){
 			perror("ERROR accepting client");
@@ -66,14 +66,13 @@ int remote_listen()
 		}
 
 		char buffer[BUFFER_SIZE];
-		memset(&buffer, 0, BUFFER_SIZE);
 		int n = 0;
 
 		int listen_client = 1;
 		while (listen_client){
+			memset(&buffer, 0, BUFFER_SIZE);
 			n = read(new_socket_desc, buffer, BUFFER_SIZE);
-			if (n == BUFFER_SIZE){
-				// too long, close
+			if (n < 1 || n == BUFFER_SIZE){
 				listen_client = 0;
 			}
 			else if (strcmp(buffer, "exit\n") == 0){
