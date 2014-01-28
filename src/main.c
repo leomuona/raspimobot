@@ -2,6 +2,7 @@
 #include "audio.h"
 #include "camera.h"
 #include "motor.h"
+#include "remote.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -21,6 +22,11 @@ int main(int argc, char **argv)
 
 	move_x();
 	move_y();
+
+	remote_init();
+	while (1){
+		sleep(10);
+	}
 
 	return 0;
 }
