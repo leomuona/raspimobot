@@ -26,9 +26,10 @@ int main(int argc, char **argv)
 			printf("Still playing...\n");
 		}
 	}
-
-	move_x();
-	move_y();
+	
+	init_motors();
+	rotate_x(1);
+	rotate_y(1);
 
 	remote_init();
 	while (1){
