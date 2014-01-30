@@ -6,12 +6,19 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(int argc, char **argv)
 {
 	printf("Hello world\n");
 
-	take_pic();
+	int width = 640;
+	int height = 480;
+	char* pic = malloc(width*height*3);
+	memset(pic, 0, width*height*3);
+	take_pic(pic, width, height);
+	free(pic);
 
 	if (argc >= 2 && play_sound(argv[1]) == 0) {
 		while (is_playing()) {

@@ -20,9 +20,17 @@
 This document includes requirements, features and design of our turret for Intelligent Embedded Systems -course (University of Helsinki course number 582711). For our project we chose to create an "intelligent" turret inspired by video game Portal by Valve Company. This document describes the intended features that our turret will have. This includes different subsections of the project, including audio output, camera input, DC motor control system and software.
 
 \section{Features}
-TODO
-- fancy use case picture?
-- or should we just copy paste stuff from design.tex?
+
+Robot will have the following features:
+
+\begin{itemize}
+  \item Horizontal and vertical rotational movement.
+  \item WAV (or ogg) audio playback.
+  \item Motion detection based on frame difference algorithm.
+  \item Aiming at detected movement.
+  \item Remote control.
+  \item Works on top of Linux.
+\end{itemize}
 
 \section{Audio}
 
@@ -38,7 +46,7 @@ To be able to use our audio amplifier on the raspberry pi, we need to make a sim
   \label{lm386_bb}
 \end{figure}
 
-In the heart of the audio amplifier stands the LM386 circuit, which is a "Low Voltage Audio Power Amplifier" and is more than enough for our use case. The figure in \ref{lm386_bb} shows the breadboard view that we'll be using for the audio amplifier. The build is same to that what is shown on the LM386 datasheet, "amplifier with Gain = 200". 
+In the heart of the audio amplifier stands the LM386 circuit, which is a "Low Voltage Audio Power Amplifier" and is more than enough for our use case. The figure in~\ref{lm386_bb} shows the breadboard view that we'll be using for the audio amplifier. The build is same to that what is shown on the LM386 datasheet, "amplifier with Gain = 200".
 
 \begin{itemize}
   \item Between PINs 1 and 8 is a 10uF capacitor, which causes a gain on 200. In desibels this is around 20. 
