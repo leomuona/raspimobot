@@ -9,10 +9,8 @@
 int take_pic(char* pic, int width, int height)
 {
 	const int ARR_SIZE = width*height*3;
-	// take picture calling raspistill and put it to char array
 
 	FILE* pf = popen("raspistill -o - -e bmp -w 640 -h 480", "r");
-	//FILE* pf = popen("echo wololoo", "r");
 
 	if (!pf){
 		perror("Could not open pipe for read-only.");
@@ -22,7 +20,7 @@ int take_pic(char* pic, int width, int height)
 	fseek(pf, BMP_OFFSET, SEEK_SET);
 	fgets(pic, ARR_SIZE, pf);
 
-	// this is just testing so free the array here
+	pclose(pf);
 
 	return 0;
 }
