@@ -76,7 +76,7 @@ int is_io_pin(int pin)
 
 int enable_output(int pin)
 {
-	if (is_io_pin(pin)) {
+	if (!is_io_pin(pin)) {
 		printf("Error: pin %d is not allowed i/o pin\n", pin);
 		return -1;
 	}
@@ -89,7 +89,7 @@ int enable_output(int pin)
 
 int set_high(int pin)
 {
-	if (is_io_pin(pin)) {
+	if (!is_io_pin(pin)) {
                 printf("Error: pin %d is not allowed i/o pin\n", pin);
                 return -1;
         }
@@ -99,7 +99,7 @@ int set_high(int pin)
 
 int set_low(int pin)
 {
-	if (is_io_pin(pin)) {
+	if (!is_io_pin(pin)) {
                 printf("Error: pin %d is not allowed i/o pin\n", pin);
                 return -1;
         }

@@ -1,8 +1,10 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-void move_x();
+int init_motors();
 
-void move_y();
+void rotate_x(float rad);
+
+void rotate_y(float rad);
 
 #endif
