@@ -4,15 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define WIDTH 640
-#define HEIGHT 480
-#define ARR_SIZE WIDTH*HEIGHT*3
 #define BMP_OFFSET 54
 
-void take_pic()
+int take_pic(char* pic, int width, int height)
 {
-	char* pic = malloc(ARR_SIZE);
-	memset(pic, 0, ARR_SIZE);
+	const int ARR_SIZE = width*height*3;
 	// take picture calling raspistill and put it to char array
 
 	FILE* pf = popen("raspistill -o - -e bmp -w 640 -h 480", "r");
@@ -20,12 +16,13 @@ void take_pic()
 
 	if (!pf){
 		perror("Could not open pipe for read-only.");
-		return;
+		return -1;
 	}
 
 	fseek(pf, BMP_OFFSET, SEEK_SET);
 	fgets(pic, ARR_SIZE, pf);
 
 	// this is just testing so free the array here
-	free(pic);
+
+	return 0;
 }

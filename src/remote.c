@@ -11,6 +11,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define PORT 5555
 #define BUFFER_SIZE 16
@@ -76,7 +77,7 @@ int remote_listen()
 				listen_client = 0;
 			}
 			else if (strcmp(buffer, "take_pic\n") == 0){
-				take_pic();
+				remote_take_pic();
 			}
 			else if (strcmp(buffer, "exit\n") == 0){
 				listen_client = 0;
@@ -103,8 +104,14 @@ int remote_take_pic()
 {
 	printf("remote take pic\n");
 
-	take_pic();
+	int width = 640;
+	int height = 480;
+	char* pic = malloc(width*height*3);
+	memset(pic, 0, width*height*3);
+	take_pic(pic, width, height);
 
+
+	free(pic);
 	return 0;
 }
 
