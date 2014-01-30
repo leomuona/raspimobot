@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "motor.h"
 #include "remote.h"
+#include "logic.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -11,29 +12,12 @@
 
 int main(int argc, char **argv)
 {
-	printf("Hello world\n");
-
-	int width = 640;
-	int height = 480;
-	char* pic = malloc(width*height*3);
-	memset(pic, 0, width*height*3);
-	take_pic(pic, width, height);
-	free(pic);
-
-	if (argc >= 2 && play_sound(argv[1]) == 0) {
-		while (is_playing()) {
-			sleep(10);
-			printf("Still playing...\n");
-		}
-	}
-	
-	init_motors();
-	rotate_x(1);
-	rotate_y(1);
-
 	remote_init();
-	while (1){
-		sleep(10);
+	
+	enable_logic();
+
+	while(1) {
+		logic_loop(argc > 1 ? argv[1] : 0);
 	}
 
 	return 0;
