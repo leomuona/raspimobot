@@ -8,11 +8,13 @@
 #include <string.h>
 #include <stdio.h>
 
+int f_logic = 0;
+
 void logic_loop(char* audiofile)
 {
-	f_loop = 1;
-
-	while (f_loop){
+	printf("f_logic = %d\n", f_logic);
+	if (f_logic){
+		printf("logic is enabled\n");
 		int width = 640;
 		int height = 480;
 		char* pic = malloc(width*height*3);
@@ -30,4 +32,18 @@ void logic_loop(char* audiofile)
 		move_x();
 		move_y();
 	}
+	else{
+		printf("logic is disabled\n");
+		sleep(1);
+	}
+}
+
+void enable_logic()
+{
+	f_logic = 1;
+}
+
+void disable_logic()
+{
+	f_logic = 0;
 }

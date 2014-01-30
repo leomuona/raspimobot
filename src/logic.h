@@ -1,8 +1,10 @@
 #ifndef LOGIC_H_
 #define LOGIC_H_
 
-int f_loop = 0;
-
 void logic_loop();
+
+void enable_logic();
+
+void disable_logic();
 
 #endif

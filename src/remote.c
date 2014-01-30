@@ -3,6 +3,7 @@
 #include "audio.h"
 #include "camera.h"
 #include "motor.h"
+#include "logic.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -78,6 +79,12 @@ int remote_listen()
 			}
 			else if (strcmp(buffer, "take_pic\n") == 0){
 				remote_take_pic();
+			}
+			else if (strcmp(buffer, "enable logic\n") == 0){
+				enable_logic();
+			}
+			else if (strcmp(buffer, "disable logic\n") == 0){
+				disable_logic();
 			}
 			else if (strcmp(buffer, "exit\n") == 0){
 				listen_client = 0;

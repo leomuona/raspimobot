@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "motor.h"
 #include "remote.h"
+#include "logic.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -11,11 +12,13 @@
 
 int main(int argc, char **argv)
 {
-	printf("Hello world\n");
-
 	remote_init();
+	
+	enable_logic();
 
-	logic_loop(argc > 1 ? argv[1] : 0);
+	while(1) {
+		logic_loop(argc > 1 ? argv[1] : 0);
+	}
 
 	return 0;
 }
