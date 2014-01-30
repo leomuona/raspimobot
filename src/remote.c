@@ -75,6 +75,9 @@ int remote_listen()
 			if (n < 1 || n == BUFFER_SIZE){
 				listen_client = 0;
 			}
+			else if (strcmp(buffer, "take_pic\n") == 0){
+				take_pic();
+			}
 			else if (strcmp(buffer, "exit\n") == 0){
 				listen_client = 0;
 			}
