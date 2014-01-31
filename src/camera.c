@@ -31,7 +31,17 @@ int take_pic(BMP *bmp)
 	char header[54] = {0};
 	read_output(pf, 54, header);
 	read_output(pf, bmp->data_size, bmp->data);
-	// TODO: rows are in wrong order, swap dem
+
+	// rows are in wrong order, swap dem
+	int w = bmp->width*3+bmp->fluff;
+	unsigned char *tmp = malloc(w);
+	int i;
+	for (i=0; i<bmp->height/2; i++) {
+		memcpy(tmp, bmp->data+w*i, w);
+		memcpy(bmp->data+w*i, bmp->data+w*(bmp->height-i-1), w);
+		memcpy(bmp->data+w*(bmp->height-i-1), tmp, w);
+	}
+	free(tmp);
 
 	return 0;
 }
