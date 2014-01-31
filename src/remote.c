@@ -1,6 +1,7 @@
 #include "remote.h"
 
 #include "audio.h"
+#include "bmp.h"
 #include "camera.h"
 #include "motor.h"
 #include "logic.h"
@@ -113,12 +114,12 @@ int remote_take_pic()
 
 	int width = 640;
 	int height = 480;
-	char* pic = malloc(width*height*3);
-	memset(pic, 0, width*height*3);
-	take_pic(pic, width, height);
-
-
-	free(pic);
+	BMP *bmp = malloc(sizeof(BMP));
+	memset(bmp, 0, sizeof(BMP));
+	BMP_init(bmp, width, height);
+	take_pic(bmp);
+	BMP_free(bmp);
+	free(bmp);
 	return 0;
 }
 
