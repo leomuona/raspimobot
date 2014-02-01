@@ -1,6 +1,7 @@
 #include "bmp.h"
 
 #include <errno.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -106,4 +107,11 @@ void BMP_read(BMP *bmp, const char *filename)
 		memcpy(bmp->data+w*(bmp->height-i-1), tmp, w);
 		free(tmp);
 	}
+}
+
+void RGB_diff(RGB *a, RGB *b, RGB *diff)
+{
+	diff->r = abs(a->r - b->r);
+	diff->g = abs(a->g - b->g);
+	diff->b = abs(a->b - b->b);
 }

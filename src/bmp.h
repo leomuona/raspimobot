@@ -30,4 +30,6 @@ void BMP_write(BMP *bmp, const char *filename);
 
 void BMP_read(BMP *bmp, const char *filename);
 
+void RGB_diff(RGB *a, RGB *b, RGB *diff);
+
 #endif // BMP_H
