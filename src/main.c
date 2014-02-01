@@ -16,9 +16,7 @@ int main(int argc, char **argv)
 	
 	enable_logic();
 
-	while(1) {
-		logic_loop(argc > 1 ? argv[1] : 0);
-	}
+	logic_loop(argc > 1 ? argv[1] : 0);
 
 	return 0;
 }

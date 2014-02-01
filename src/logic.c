@@ -1,8 +1,9 @@
 #include "logic.h"
 
+#include "audio.h"
+#include "bmp.h"
 #include "camera.h"
 #include "motor.h"
-#include "audio.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -17,10 +18,14 @@ void logic_loop(char* audiofile)
 		printf("logic is enabled\n");
 		int width = 640;
 		int height = 480;
-		char* pic = malloc(width*height*3);
-		memset(pic, 0, width*height*3);
-		take_pic(pic, width, height);
-		free(pic);
+
+		BMP *bmp = malloc(sizeof(BMP));
+		memset(bmp, 0, sizeof(BMP));
+		BMP_init(bmp, width, height);
+		take_pic(bmp);
+		BMP_write(bmp, "temp.bmp");
+		BMP_free(bmp);
+		free(bmp);
 
 		if (audiofile != 0 && play_sound(audiofile) == 0) {
 			while (is_playing()) {
