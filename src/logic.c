@@ -44,7 +44,7 @@ void logic_loop(char* audiofile)
 		}
 		
 		if (pic1 && pic2){
-			DetectionDiff* diff = motion_detect(pic1, pic2, 90, 5);
+			DetectionDiff* diff = motion_detect(pic1, pic2, 45, 5);
 
 			BMP_write(pic1, "pic1.bmp");
 			BMP_write(pic2, "pic2.bmp");
