@@ -13,6 +13,8 @@ static const char *client_name = "raspimobot";
 static const char *stream_name = "raspimobot_stream";
 static const char *device = NULL;
 
+static pa_volume_t volume = PA_VOLUME_NORM / 3;
+
 static int playing = 0;
 
 struct PAContext
@@ -166,6 +168,8 @@ static void context_state_callback(pa_context *c, void *userdata)
 			break;
 
 		case PA_CONTEXT_READY:
+		{
+			pa_cvolume cv;
 			assert(!ctx->stream);
 			fprintf(stdout, "Connection established.\n");
 
@@ -174,8 +178,9 @@ static void context_state_callback(pa_context *c, void *userdata)
 
 			pa_stream_set_state_callback(ctx->stream, stream_state_callback, userdata);
 			pa_stream_set_write_callback(ctx->stream, stream_write_callback, userdata);
-			pa_stream_connect_playback(ctx->stream, device, NULL, 0, NULL, NULL);
+			pa_stream_connect_playback(ctx->stream, device, NULL, 0, pa_cvolume_set(&cv, ctx->sample_spec.channels, volume), NULL);
 			break;
+		}
 
 		case PA_CONTEXT_TERMINATED:
 			quit(0, ctx);
