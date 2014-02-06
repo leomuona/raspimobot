@@ -20,5 +20,9 @@ int main(int argc, char **argv)
 	logic_loop(argc > 1 ? argv[1] : 0);
 	logic_loop(argc > 1 ? argv[1] : 0);
 
+	while (is_playing()) {
+		usleep(10000);
+	}
+
 	return 0;
 }
