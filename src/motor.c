@@ -56,8 +56,8 @@ void rotate_x(float rad)
 	}
 	float time = rad / X_MOTOR_ANG_V;
 	struct timespec sleep_time;
-	sleep_time.tv_sec = (time_t) time;
-	sleep_time.tv_nsec = (long) (time * 1000000000);
+	sleep_time.tv_sec = (int) time;
+	sleep_time.tv_nsec = (long) ((time - ((int) time)) * 1000000000);
 
 	if (turn_right) {
 		set_low(x_motor.a);
@@ -81,8 +81,8 @@ void rotate_y(float rad)
 	}
 	float time = rad / Y_MOTOR_ANG_V;
 	struct timespec sleep_time;
-	sleep_time.tv_sec = (time_t) time;
-	sleep_time.tv_nsec = (long) (time * 1000000000);
+	sleep_time.tv_sec = (int) time;
+	sleep_time.tv_nsec = (long) ((time - ((int) time)) * 1000000000);
 
 	if (turn_up) {
 		set_low(y_motor.a);

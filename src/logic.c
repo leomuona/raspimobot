@@ -61,8 +61,9 @@ void logic_loop(char* audiofile)
 			free(diff);
 		}
 
-		//rotate_x(1.0f);
-		//rotate_y(1.0f);
+		// uncomment to test motors
+		//rotate_x(10.0f);
+		//rotate_y(10.0f);
 	}
 	else{
 		printf("logic is disabled\n");
