@@ -11,6 +11,9 @@
 
 int f_logic = 0;
 
+BMP *pic1 = 0;
+BMP *pic2 = 0;
+
 void logic_loop(char* audiofile)
 {
 	printf("f_logic = %d\n", f_logic);
@@ -19,13 +22,29 @@ void logic_loop(char* audiofile)
 		int width = 640;
 		int height = 480;
 
-		BMP *bmp = malloc(sizeof(BMP));
-		memset(bmp, 0, sizeof(BMP));
-		BMP_init(bmp, width, height);
-		take_pic(bmp);
-		BMP_write(bmp, "temp.bmp");
-		BMP_free(bmp);
-		free(bmp);
+		if (!pic1){
+			pic1 = malloc(sizeof(BMP));
+			memset(pic1, 0, sizeof(BMP));
+			BMP_init(pic1, width, height);
+			take_pic(pic1);
+		}
+		else if (!pic2){
+			pic2 = pic1;
+			pic1 = malloc(sizeof(BMP));
+			memset(pic1, 0, sizeof(BMP));
+			BMP_init(pic1, width, height);
+			take_pic(pic1);
+		}
+		else{
+			BMP* bmp = pic2;
+			pic2 = pic1;
+			take_pic(bmp);
+			pic1 = bmp;
+		}
+		
+		if (pic1 && pic2){
+			// motion detect
+		}
 
 		if (audiofile != 0 && play_sound(audiofile) == 0) {
 			while (is_playing()) {
@@ -34,8 +53,8 @@ void logic_loop(char* audiofile)
 			}
 		}
 
-		rotate_x(1.0f);
-		rotate_y(1.0f);
+		//rotate_x(1.0f);
+		//rotate_y(1.0f);
 	}
 	else{
 		printf("logic is disabled\n");
