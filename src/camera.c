@@ -20,7 +20,7 @@ void read_output(FILE *fd, size_t count, char *buffer)
 int take_pic(BMP *bmp)
 {
 	char cmd[255] = {0};
-	sprintf(cmd, "raspistill -o - -e bmp -w %d -h %d", bmp->width, bmp->height);
+	sprintf(cmd, "raspistill -o - -e bmp -w %d -h %d -t 0", bmp->width, bmp->height);
 	printf("exec: %s\n", cmd);
 	FILE* pf = popen(cmd, "r");
 	if (!pf) {
