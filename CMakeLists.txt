@@ -4,4 +4,4 @@ project(raspimobot)
 file(GLOB_RECURSE sources src/*.c)
 
 add_executable(raspimobot ${sources})
-target_link_libraries(raspimobot pulse sndfile pthread)
+target_link_libraries(raspimobot pulse sndfile pthread wiringPi)
