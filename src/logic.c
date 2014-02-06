@@ -19,6 +19,11 @@ void logic_loop(char* audiofile)
 {
 	printf("f_logic = %d\n", f_logic);
 	if (f_logic){
+		if (audiofile != NULL)
+			if (!is_playing())
+				if (play_sound(audiofile) == 0)
+					printf("Started playing: %s\n", audiofile);
+
 		printf("logic is enabled\n");
 		int width = 640;
 		int height = 480;
@@ -54,13 +59,6 @@ void logic_loop(char* audiofile)
 			BMP_free(diff->first_pass);
 			BMP_free(diff->second_pass);
 			free(diff);
-		}
-
-		if (audiofile != 0 && play_sound(audiofile) == 0) {
-			while (is_playing()) {
-				sleep(10);
-				printf("Still playing...\n");
-			}
 		}
 
 		//rotate_x(1.0f);
