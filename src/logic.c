@@ -4,6 +4,7 @@
 #include "bmp.h"
 #include "camera.h"
 #include "motor.h"
+#include "motion_detect.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,16 @@ void logic_loop(char* audiofile)
 		}
 		
 		if (pic1 && pic2){
-			// motion detect
+			DetectionDiff* diff = motion_detect(pic1, pic2, 90, 5);
+
+			BMP_write(pic1, "pic1.bmp");
+			BMP_write(pic2, "pic2.bmp");
+			BMP_write(diff->first_pass, "first_pass.bmp");
+			BMP_write(diff->second_pass, "second_pass.bmp");
+
+			BMP_free(diff->first_pass);
+			BMP_free(diff->second_pass);
+			free(diff);
 		}
 
 		if (audiofile != 0 && play_sound(audiofile) == 0) {
