@@ -1,6 +1,7 @@
 #include "motor.h"
 
 #include "gpio.h"
+#include "util.h"
 #include <time.h>
 #include <math.h>
 #include <stdio.h>
@@ -18,8 +19,8 @@ struct motor {
 	int b;
 };
 
-struct motor x_motor = {11, 12}; 
-struct motor y_motor = {15, 16};
+struct motor x_motor = {0, 1}; // GPIO0 = hardware 11 & GPIO1 hardware 12  
+struct motor y_motor = {3, 4}; // GPIO3 = hardware 15 & GPIO4 hardware 16
 
 int init_motors()
 {
@@ -55,19 +56,15 @@ void rotate_x(float rad)
 		turn_right = 0;
 	}
 	float time = rad / X_MOTOR_ANG_V;
-	struct timespec sleep_time;
-	sleep_time.tv_sec = (time_t) time;
-	sleep_time.tv_nsec = (long) (time * 1000000000);
-
 	if (turn_right) {
 		set_low(x_motor.a);
 		set_high(x_motor.b);
-		nanosleep(&sleep_time, NULL);
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.b);
 	} else {
 		set_low(x_motor.b);
 		set_high(x_motor.a);
-		nanosleep(&sleep_time, NULL);
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.a);
 	}
 }
@@ -80,19 +77,15 @@ void rotate_y(float rad)
 		turn_up = 0;
 	}
 	float time = rad / Y_MOTOR_ANG_V;
-	struct timespec sleep_time;
-	sleep_time.tv_sec = (time_t) time;
-	sleep_time.tv_nsec = (long) (time * 1000000000);
-
 	if (turn_up) {
 		set_low(y_motor.a);
 		set_high(y_motor.b);
-		nanosleep(&sleep_time, NULL);
+		delayms((int) (time * 1000)); // msec
 		set_low(y_motor.b);
 	} else {
 		set_low(y_motor.b);
 		set_high(y_motor.a);
-		nanosleep(&sleep_time, NULL);
+		delayms((int) (time * 1000)); // msec
 		set_low(y_motor.a);
 	}
 }

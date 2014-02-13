@@ -49,7 +49,7 @@ void logic_loop(char* audiofile)
 		}
 		
 		if (pic1 && pic2){
-			DetectionDiff* diff = motion_detect(pic1, pic2, 45, 5);
+			DetectionDiff* diff = motion_detect(pic1, pic2, 50, 5);
 
 			float angles[2];
 			if (calc_rotation(diff, angles)){
@@ -58,8 +58,8 @@ void logic_loop(char* audiofile)
 				// set both pic pointers to NULL
 				pic1 = NULL;
 				pic2 = NULL;
-				//rotate_x(angles[0]);
-				//rotate_y(angles[1]);
+				rotate_x(angles[0]);
+				rotate_y(angles[1]);
 			}
 
 			BMP_free(diff->first_pass);

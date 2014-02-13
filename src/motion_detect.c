@@ -36,7 +36,7 @@ DetectionDiff *motion_detect(BMP *a, BMP *b, int difference_threshold, int noise
 			BMP_get(b, i, j, &rgb_b);
 			RGB_diff(&rgb_a, &rgb_b, &diff);
 
-			if ((diff.r + diff.g + diff.b)/3 >= difference_threshold) {
+			if ((diff.r + diff.g + diff.b) >= difference_threshold) {
 				BMP_put(first_pass, i, j, &foreground);
 			} else {
 				BMP_put(first_pass, i, j, &background);

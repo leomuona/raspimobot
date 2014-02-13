@@ -57,6 +57,8 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 {
 	if (diff->min_x > diff->max_x || diff->min_y > diff->max_y){
 		// no diff
+		printf("no diff, min_x = %d, max_x = %d, min_y = %d, max_y = %d\n", 
+			diff->min_x, diff->max_x, diff->min_y, diff->max_y);
 		return 0;
 	}
 	int max_x = diff->first_pass->width;
@@ -74,18 +76,20 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 
 	if (center_x == orig_x && center_y == orig_y){
 		// diff center is in origo
+		printf("diff center in origo, center_x = %d, center_y = %d, orig_x = %d, orig_y = %d\n", 
+			center_x, center_y, orig_x, orig_y);
 		return 0;
 	}
 
 	if (center_x != orig_x){
-		float relative_angle_hor = center_x / (float) orig_x - 1.0f;
+		relative_angle_hor = center_x / (float) orig_x - 1.0f;
 	}
 	else{
 		relative_angle_hor = .0f;
 	}
 
 	if (center_y != orig_y){
-		float relative_angle_ver = center_y / (float) orig_y - 1.0f;
+		relative_angle_ver = center_y / (float) orig_y - 1.0f;
 	}
 	else{
 		relative_angle_ver = .0f;
