@@ -26,6 +26,7 @@ Our software works on top of Linux OS. Our implementation language was C and com
 
 \begin{algorithm}
   \label{mainloop}
+  \caption{main loop}
   \begin{algorithmic}
     \IF {!(old picture has been taken)}
       \STATE takePicture(old picture)
@@ -50,9 +51,40 @@ Our software works on top of Linux OS. Our implementation language was C and com
       \ENDIF
     \ENDIF
   \end{algorithmic}
-  \caption{main loop}
 \end{algorithm}
 
 The algoritm in~\ref{mainloop} shows our main loop that is iterated over and over again. The tests for old and new pictures are part of the initialization routine. We need to take at least to picture to be able to look for motion. After new and old pictures have been taken, we can use the newer picture as the older picture, and take only one picture. If, however, we detected motion and moved our motors, both pictures need to be taken again, for the reasons that the delta time is too great between the pictures, and camera viewpoint has changed.
+
+\subsection{Motion detection algorithm}
+
+\begin{algorithm}
+  \label{motiondetection}
+  \caption{Motion detection $diff = a - b$}
+  \begin{algorithmic}
+    \STATE \COMMENT{First-pass marks the pixels that are changed}
+    \STATE init(first pass)
+    \FORALL {pixels in a and b}
+      \STATE diff = abs(pixel(a) - pixel(b)))
+      \IF {diff $>=$ difference threshold}
+        \STATE mark pixel as changed in first pass
+      \ENDIF
+    \ENDFOR
+
+    \STATE \COMMENT{Second-pass is erosion filter $=>$ ignore minor differences}
+    \STATE init(second pass)
+    \STATE n = ((noise filter size) - 1)/2
+    \FORALL {pixels in a and b}
+      \STATE count the number of marked pixels in current window
+      \IF {marked pixels $>=$ noise filter size}
+        \STATE mark pixels as changed in second pass
+      \ENDIF
+    \ENDFOR
+
+  \end{algorithmic}
+\end{algorithm}
+
+The motion detection routine in~\ref{motiondetection} is extremely simple and naive. We do the checks by comparing pixel values between two different images. This means that even smallest jolt to our base causes the motion detection to completely fail. Then again the center of the movement is then centered and it doesn't matter that much.
+
+We have two variables to adjust the detection algorithm. Difference threshold and noise filter size. Difference threshold is used to check if given pixel has been changed. If the difference of the given pixels is greater than difference threshold, then the pixel is assumed as changed. Noise filter is used to filter out single pixel differences, that passed difference threshold. This in effect requires that motion differences come in blocks, rather than singles. Making this setting too high makes the code extremely inefficient.
 
 \end{document}
