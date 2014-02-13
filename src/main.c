@@ -16,8 +16,7 @@ int main(int argc, char **argv)
 	
 	enable_logic();
 
-	// uncomment this in raspi to test motors
-	//init_motors();
+	init_motors();
 
 	while(1){
 		logic_loop(argc > 1 ? argv[1] : 0);

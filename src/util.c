@@ -2,7 +2,7 @@
 
 #include <time.h>
 
-void delay(unsigned int howLong)
+void delayms(unsigned int howLong)
 {
 	struct timespec sleeper, dummy;
 	sleeper.tv_sec  = (time_t)(howLong / 1000) ;

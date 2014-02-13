@@ -59,12 +59,12 @@ void rotate_x(float rad)
 	if (turn_right) {
 		set_low(x_motor.a);
 		set_high(x_motor.b);
-		delay((int) (time * 1000)); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.b);
 	} else {
 		set_low(x_motor.b);
 		set_high(x_motor.a);
-		delay((int) (time * 1000)); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.a);
 	}
 }
@@ -80,12 +80,12 @@ void rotate_y(float rad)
 	if (turn_up) {
 		set_low(y_motor.a);
 		set_high(y_motor.b);
-		delay((int) (time * 1000)); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(y_motor.b);
 	} else {
 		set_low(y_motor.b);
 		set_high(y_motor.a);
-		delay((int) (time * 1000)); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(y_motor.a);
 	}
 }
