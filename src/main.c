@@ -19,9 +19,9 @@ int main(int argc, char **argv)
 	// uncomment this in raspi to test motors
 	//init_motors();
 
-	logic_loop(argc > 1 ? argv[1] : 0);
-	logic_loop(argc > 1 ? argv[1] : 0);
-	logic_loop(argc > 1 ? argv[1] : 0);
+	while(1){
+		logic_loop(argc > 1 ? argv[1] : 0);
+	}
 
 	while (is_playing()) {
 		usleep(10000);
