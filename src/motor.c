@@ -1,6 +1,7 @@
 #include "motor.h"
 
 #include "gpio.h"
+#include "util.h"
 #include <time.h>
 #include <math.h>
 #include <stdio.h>

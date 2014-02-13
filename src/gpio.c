@@ -16,7 +16,7 @@ int init_gpio()
 int is_io_pin(int pin)
 {
 	switch (pin) {
-	case 0 .. 6: // wiringPi pins are 0 .. 6
+	case 0 ... 6: // wiringPi pins are 0 .. 6
 		return 1; // is i/o pin
 	default:
 		return 0; // not allowed pin
