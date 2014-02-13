@@ -87,4 +87,7 @@ The motion detection routine in~\ref{motiondetection} is extremely simple and na
 
 We have two variables to adjust the detection algorithm. Difference threshold and noise filter size. Difference threshold is used to check if given pixel has been changed. If the difference of the given pixels is greater than difference threshold, then the pixel is assumed as changed. Noise filter is used to filter out single pixel differences, that passed difference threshold. This in effect requires that motion differences come in blocks, rather than singles. Making this setting too high makes the code extremely inefficient.
 
+In essence, the motion detection algorithm takes two pictures with camera, compares the images pixel by pixel basis and filters out differences caused by noise. The motion is expected to be found from the center of the found motion frame.
+
+
 \end{document}
