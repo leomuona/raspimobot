@@ -1,0 +1,58 @@
+\documentclass[english,11pt,twoside,a4paper]{article}
+\usepackage[left=2cm,top=1cm,right=2cm,nohead,nofoot]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\begin{document}
+\author{
+  Niemistö, Jesse
+  \and
+  Muona, Leo
+  \and
+  Hilden, Matias
+}
+\title{Implementation}
+
+\maketitle
+
+\section{Software}
+
+Our software works on top of Linux OS. Our implementation language was C and compiler used was GCC. We do not link against any external libraries. 
+
+\subsection{Main loop}
+
+\begin{algorithm}
+  \label{mainloop}
+  \begin{algorithmic}
+    \IF {!(old picture has been taken)}
+      \STATE takePicture(old picture)
+    \ELSIF {!(new picture has been taken)}
+      \STATE takePicture(new picture)
+    \ELSE
+      \STATE new picture = old picture
+      \STATE takePicture(new picture)
+    \ENDIF
+
+    \IF {old picture and new picture have been taken}
+      \STATE diff = doMotionDetection(old picture, new picture)
+      \IF {detected motion in diff}
+        \STATE horizontal, vertical = doCalcRotation(diff)
+        \STATE rotateMotorX(horizontal)
+        \STATE rotateMotorY(vertical)
+        \IF {!(is some sound playing)}
+          \STATE play some sound effect
+        \ENDIF
+	\STATE old picture = NULL
+	\STATE new picture = NULL
+      \ENDIF
+    \ENDIF
+  \end{algorithmic}
+  \caption{main loop}
+\end{algorithm}
+
+The algoritm in~\ref{mainloop} shows our main loop that is iterated over and over again. The tests for old and new pictures are part of the initialization routine. We need to take at least to picture to be able to look for motion. After new and old pictures have been taken, we can use the newer picture as the older picture, and take only one picture. If, however, we detected motion and moved our motors, both pictures need to be taken again, for the reasons that the delta time is too great between the pictures, and camera viewpoint has changed.
+
+\end{document}
