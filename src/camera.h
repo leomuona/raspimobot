@@ -18,6 +18,6 @@ int take_pic(BMP *bmp);
  * @param angles two dimension float array that is filled with the results.
  * Index 0 will contain horizontal angle and index 1 will contain vertical angle.
  */
-int calc_rotation(DetectionDiff *diff, float *angles);
+int calc_rotation(DetectionDiff *diff, float angles[2]);
 
 #endif // CAMERA_H_

@@ -53,7 +53,7 @@ int take_pic(BMP *bmp)
 	return 0;
 }
 
-int calc_rotation(DetectionDiff* diff, float *angles)
+int calc_rotation(DetectionDiff* diff, float angles[2])
 {
 	if (diff->min_x > diff->max_x || diff->min_y > diff->max_y){
 		// no diff
