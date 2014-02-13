@@ -49,7 +49,7 @@ void logic_loop(char* audiofile)
 		}
 		
 		if (pic1 && pic2){
-			DetectionDiff* diff = motion_detect(pic1, pic2, 45, 5);
+			DetectionDiff* diff = motion_detect(pic1, pic2, 50, 5);
 
 			float angles[2];
 			if (calc_rotation(diff, angles)){
