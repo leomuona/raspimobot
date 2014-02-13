@@ -57,7 +57,7 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 {
 	if (diff->min_x > diff->max_x || diff->min_y > diff->max_y){
 		// no diff
-		return 1;
+		return 0;
 	}
 	int max_x = diff->first_pass->width;
 	int max_y = diff->first_pass->height;
@@ -74,7 +74,7 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 
 	if (center_x == orig_x && center_y == orig_y){
 		// diff center is in origo
-		return 1;
+		return 0;
 	}
 
 	if (center_x != orig_x){
@@ -94,5 +94,5 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 	angles[0] = (CAMERA_FOV_HORIZONTAL / 2.0f) * relative_angle_hor;
 	angles[1] = (CAMERA_FOV_VERTICAL / 2.0f) * relative_angle_ver;
 
-	return 0;
+	return 1;
 }

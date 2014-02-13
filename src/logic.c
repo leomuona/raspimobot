@@ -51,18 +51,21 @@ void logic_loop(char* audiofile)
 		if (pic1 && pic2){
 			DetectionDiff* diff = motion_detect(pic1, pic2, 45, 5);
 
-			BMP_write(pic1, "pic1.bmp");
-			BMP_write(pic2, "pic2.bmp");
-			BMP_write(diff->first_pass, "first_pass.bmp");
-			BMP_write(diff->second_pass, "second_pass.bmp");
+			float angles[2];
+			if (calc_rotation(diff, angles)){
+				printf("detected motion, horizontal rotation = %f radians\n", angles[0]);
+				printf("detected motion, vertical rotation = %f radians\n", angles[1]);
+				// set both pic pointers to NULL
+				pic1 = NULL;
+				pic2 = NULL;
+				//rotate_x(angles[0]);
+				//rotate_y(angles[1]);
+			}
 
 			BMP_free(diff->first_pass);
 			BMP_free(diff->second_pass);
 			free(diff);
 		}
-
-		//rotate_x(1.0f);
-		//rotate_y(1.0f);
 	}
 	else{
 		printf("logic is disabled\n");
