@@ -2,6 +2,22 @@
 #define AUDIO_H
 
 /**
+ * Initializes the samples with the files from given directory.
+ *
+ * @param samples directory
+ */
+void init_samples(const char *dirname);
+
+/**
+ * Play one random sample from the initialized sample list.
+ *
+ * Uses c rand for selecting the sample, seeding should be done elsewhere.
+ *
+ * Doesn't block, just returns straight and doesn't tell the result.
+ */
+void play_random_sample();
+
+/**
  * Play given sound file (WAV).
  *
  * @param filename fo the file.
