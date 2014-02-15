@@ -1,13 +1,17 @@
 #include "audio.h"
+#include "util.h"
 
 #include <assert.h>
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <sndfile.h>
 
 #include <pulse/pulseaudio.h>
+
+DirEntry *samples = NULL;
 
 static const char *client_name = "raspimobot";
 static const char *stream_name = "raspimobot_stream";
@@ -32,6 +36,29 @@ struct PAContext
 };
 
 typedef struct PAContext PAContext;
+
+void init_samples(const char *dir)
+{
+	int n;
+	samples = get_file_entries(dir);
+	if (samples && samples->n > 0) {
+		printf("Initialized samples with %d track(s).\n[\n", samples->n);
+		for (n=0; n<samples->n; ++n) {
+			printf("  %s", samples->files[n]);
+			if (n < samples->n - 1)
+				printf(",\n");
+			else
+				printf("\n];\n");
+		}
+	}
+}
+
+void play_random_sample()
+{
+	if (samples && samples->n > 0) {
+		play_sound(samples->files[rand()%samples->n]);
+	}
+}
 
 static void pa_context_cleanup(PAContext *ctx)
 {

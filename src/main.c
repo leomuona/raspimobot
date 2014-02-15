@@ -4,6 +4,7 @@
 #include "motor.h"
 #include "remote.h"
 #include "logic.h"
+#include "util.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -17,9 +18,10 @@ int main(int argc, char **argv)
 	enable_logic();
 
 	init_motors();
+	init_samples("samples");
 
 	while(1){
-		logic_loop(argc > 1 ? argv[1] : 0);
+		logic_loop();
 	}
 
 	while (is_playing()) {
