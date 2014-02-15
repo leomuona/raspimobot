@@ -27,7 +27,8 @@ void read_output(FILE *fd, size_t count, char *buffer)
 int take_pic(BMP *bmp)
 {
 	char cmd[255] = {0};
-	sprintf(cmd, "raspistill -o - -e bmp -w %d -h %d -t 0", bmp->width, bmp->height);
+	sprintf(cmd, "raspistill -o - -e bmp -w %d -h %d -t 0", 
+		bmp->width, bmp->height);
 	printf("exec: %s\n", cmd);
 	FILE* pf = popen(cmd, "r");
 	if (!pf) {
@@ -57,8 +58,9 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 {
 	if (diff->min_x > diff->max_x || diff->min_y > diff->max_y){
 		// no diff
-		printf("no diff, min_x = %d, max_x = %d, min_y = %d, max_y = %d\n", 
-			diff->min_x, diff->max_x, diff->min_y, diff->max_y);
+		printf("no diff, min_x = %d, max_x = %d, min_y = %d"
+			", max_y = %d\n", diff->min_x, 
+			diff->max_x, diff->min_y, diff->max_y);
 		return 0;
 	}
 	int max_x = diff->first_pass->width;
@@ -76,7 +78,8 @@ int calc_rotation(DetectionDiff* diff, float angles[2])
 
 	if (center_x == orig_x && center_y == orig_y){
 		// diff center is in origo
-		printf("diff center in origo, center_x = %d, center_y = %d, orig_x = %d, orig_y = %d\n", 
+		printf("diff center in origo, center_x = %d, "
+			"center_y = %d, orig_x = %d, orig_y = %d\n", 
 			center_x, center_y, orig_x, orig_y);
 		return 0;
 	}
