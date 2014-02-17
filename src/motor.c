@@ -11,7 +11,11 @@
 #endif
 
 // angular velocities of motors
-#define X_MOTOR_ANG_V (M_PI/2)
+#define X_MOTOR_ANG_V (M_PI/4)
+#define X_MOTOR_DELTA_MAX (M_PI/3)
+
+// motor radius delta
+float x_motor_delta = 0.0f;
 
 struct motor {
 	int a;
@@ -42,14 +46,27 @@ int init_motors()
 	return 0;
 }
 
+float safe_rad(float rad)
+{
+	if (x_motor_delta + rad > X_MOTOR_DELTA_MAX) {
+		rad = X_MOTOR_DELTA_MAX - x_motor_delta;
+	} else if (x_motor_delta + rad < -X_MOTOR_DELTA_MAX) {
+		rad = -(X_MOTOR_DELTA_MAX + x_motor_delta);
+	}
+	return rad;
+}
+
 void rotate_x(float rad)
 {
 	int turn_right = 1;
+	rad = safe_rad(rad);
+	x_motor_delta += rad;
 	if (rad < 0) {
 		rad = -rad;
 		turn_right = 0;
 	}
 	float time = rad / X_MOTOR_ANG_V;
+	
 	if (turn_right) {
 		set_low(x_motor.a);
 		set_high(x_motor.b);
