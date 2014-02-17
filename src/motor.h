@@ -5,6 +5,4 @@ int init_motors();
 
 void rotate_x(float rad);
 
-void rotate_y(float rad);
-
 #endif

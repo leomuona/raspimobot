@@ -135,5 +135,4 @@ int remote_move(int x, int y)
 	printf("remote move x=%d, y=%d\n", x, y);
 
 	rotate_x(x);
-	rotate_y(y);
 }

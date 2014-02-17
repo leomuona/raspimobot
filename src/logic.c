@@ -60,7 +60,6 @@ void logic_loop()
 				}
 
 				rotate_x(angles[0]);
-				rotate_y(angles[1]);
 			}
 
 			BMP_free(diff->first_pass);
