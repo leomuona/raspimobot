@@ -11,8 +11,8 @@
 #endif
 
 // angular velocities of motors
-#define X_MOTOR_ANG_V (M_PI/4)
-#define X_MOTOR_DELTA_MAX (M_PI/3)
+#define X_MOTOR_ANG_V 1.337f
+#define X_MOTOR_DELTA_MAX (M_PI/4)
 
 // motor radius delta
 float x_motor_delta = 0.0f;
