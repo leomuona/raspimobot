@@ -89,5 +89,30 @@ We have two variables to adjust the detection algorithm. Difference threshold an
 
 In essence, the motion detection algorithm takes two pictures with camera, compares the images pixel by pixel basis and filters out differences caused by noise. The motion is expected to be found from the center of the found motion frame.
 
+\subsection {Rotation angle calculation}
+
+\begin{algorithm}
+  \label{rotationanglecalc}
+  \caption{Rotation angle $diff$}
+  \begin{algorithmic}
+    \IF {diff $>$ 0}
+      \STATE \COMMENT{calculate the center of different pixels}
+      \STATE centerx = (diff.minx + diff.maxx) / 2
+      \STATE centery = (diff.miny + diff.maxy) / 2
+      \IF {centerx $!=$ middlex AND centery $!=$ middley}
+        \STATE \COMMENT{calculate center relation to middle and closest edge}
+	\STATE relationx = centerx / middlex - 1
+	\STATE relationy = centery / middley - 1
+	\STATE \COMMENT{return relative rotation angle times angle of view}
+	\STATE horizontalangle = relationx * horizontalangleofview / 2
+	\STATE verticalangle = relationy * verticalangleofview / 2
+      \ENDIF
+    \ENDIF
+  \end{algorithmic}
+\end{algorithm}
+
+The purpose of this algorithm is to calculate to rotation angles needed in order to face the center of motion. Results of this algorithm are passed straight to the motor code.
+
+When motion detection algorithm has calculated the difference between two pictures, the result is passed to this rotation angle calculation algorithm. It calculates the center of difference by taking average of the most left and right pixels and average of the most bottom and top pixels. Then it calculates the relative distances to the center of the picture and edges from those pixels. As we know the angles of view for the camera module from technical specifications, the rotation angles can be calculated by multiplying the relative distances with halved angles of view.
 
 \end{document}
