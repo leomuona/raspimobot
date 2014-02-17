@@ -3,8 +3,8 @@
 
 int init_motors();
 
-void rotate_x(float rad);
+float safe_rad(float rad);
 
-void rotate_y(float rad);
+void rotate_x(float rad);
 
 #endif

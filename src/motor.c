@@ -11,8 +11,11 @@
 #endif
 
 // angular velocities of motors
-#define X_MOTOR_ANG_V (M_PI/2)
-#define Y_MOTOR_ANG_V (M_PI/2)
+#define X_MOTOR_ANG_V 1.337f
+#define X_MOTOR_DELTA_MAX (M_PI/4)
+
+// motor radius delta
+float x_motor_delta = 0.0f;
 
 struct motor {
 	int a;
@@ -20,7 +23,6 @@ struct motor {
 };
 
 struct motor x_motor = {0, 1}; // GPIO0 = hardware 11 & GPIO1 hardware 12  
-struct motor y_motor = {3, 4}; // GPIO3 = hardware 15 & GPIO4 hardware 16
 
 int init_motors()
 {
@@ -33,8 +35,6 @@ int init_motors()
 	result = 0;
 	if (enable_output(x_motor.a) < 0) result = -1;
 	if (enable_output(x_motor.b) < 0) result = -1;
-	if (enable_output(y_motor.a) < 0) result = -1;
-	if (enable_output(y_motor.b) < 0) result = -1;
 	if (result < 0) {
 		printf("Enabling motor output pins failed.\n");
 		return -1;
@@ -42,20 +42,31 @@ int init_motors()
 	// set pins to low by default
 	set_low(x_motor.a);
 	set_low(x_motor.b);
-	set_low(y_motor.a);
-	set_low(y_motor.b);
 
 	return 0;
+}
+
+float safe_rad(float rad)
+{
+	if (x_motor_delta + rad > X_MOTOR_DELTA_MAX) {
+		rad = X_MOTOR_DELTA_MAX - x_motor_delta;
+	} else if (x_motor_delta + rad < -X_MOTOR_DELTA_MAX) {
+		rad = -(X_MOTOR_DELTA_MAX + x_motor_delta);
+	}
+	return rad;
 }
 
 void rotate_x(float rad)
 {
 	int turn_right = 1;
+	rad = safe_rad(rad);
+	x_motor_delta += rad;
 	if (rad < 0) {
 		rad = -rad;
 		turn_right = 0;
 	}
 	float time = rad / X_MOTOR_ANG_V;
+	
 	if (turn_right) {
 		set_low(x_motor.a);
 		set_high(x_motor.b);
@@ -66,27 +77,6 @@ void rotate_x(float rad)
 		set_high(x_motor.a);
 		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.a);
-	}
-}
-
-void rotate_y(float rad)
-{
-	int turn_up = 1;
-	if (rad < 0) {
-		rad = -rad;
-		turn_up = 0;
-	}
-	float time = rad / Y_MOTOR_ANG_V;
-	if (turn_up) {
-		set_low(y_motor.a);
-		set_high(y_motor.b);
-		delayms((int) (time * 1000)); // msec
-		set_low(y_motor.b);
-	} else {
-		set_low(y_motor.b);
-		set_high(y_motor.a);
-		delayms((int) (time * 1000)); // msec
-		set_low(y_motor.a);
 	}
 }
 
