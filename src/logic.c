@@ -15,14 +15,10 @@ int f_logic = 0;
 BMP *pic1 = 0;
 BMP *pic2 = 0;
 
-void logic_loop(char* audiofile)
+void logic_loop()
 {
 	printf("f_logic = %d\n", f_logic);
 	if (f_logic){
-		if (audiofile != NULL)
-			if (!is_playing())
-				if (play_sound(audiofile) == 0)
-					printf("Started playing: %s\n", audiofile);
 
 		printf("logic is enabled\n");
 		int width = 640;
@@ -58,6 +54,11 @@ void logic_loop(char* audiofile)
 				// set both pic pointers to NULL
 				pic1 = NULL;
 				pic2 = NULL;
+
+				if (!is_playing()) {
+					play_random_sample();
+				}
+
 				rotate_x(angles[0]);
 				rotate_y(angles[1]);
 			}
