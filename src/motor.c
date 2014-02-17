@@ -10,9 +10,12 @@
 #define M_PI 3.14159265f
 #endif
 
+// starting motor input lag in milliseconds
+#define X_MOTOR_LAG_MS 10
+
 // angular velocities of motors
 #define X_MOTOR_ANG_V 1.337f
-#define X_MOTOR_DELTA_MAX (M_PI/4)
+#define X_MOTOR_DELTA_MAX (M_PI/6)
 
 // motor radius delta
 float x_motor_delta = 0.0f;
@@ -70,12 +73,12 @@ void rotate_x(float rad)
 	if (turn_right) {
 		set_low(x_motor.a);
 		set_high(x_motor.b);
-		delayms((int) (time * 1000)); // msec
+		delayms((int) (time * 1000) + X_MOTOR_LAG_MS); // msec
 		set_low(x_motor.b);
 	} else {
 		set_low(x_motor.b);
 		set_high(x_motor.a);
-		delayms((int) (time * 1000)); // msec
+		delayms((int) (time * 1000) + X_MOTOR_LAG_MS); // msec
 		set_low(x_motor.a);
 	}
 }
