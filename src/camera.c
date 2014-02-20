@@ -36,8 +36,6 @@ int take_pic(BMP *bmp)
 		return -1;
 	}
 
-	pclose(pf);
-
 	char header[54] = {0};
 	read_output(pf, 54, header);
 	read_output(pf, bmp->data_size, bmp->data);
@@ -51,6 +49,7 @@ int take_pic(BMP *bmp)
 		memcpy(bmp->data+w*i, bmp->data+w*(bmp->height-i-1), w);
 		memcpy(bmp->data+w*(bmp->height-i-1), tmp, w);
 	}
+	pclose(pf);
 	free(tmp);
 
 	return 0;
