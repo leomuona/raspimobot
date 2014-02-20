@@ -61,8 +61,29 @@ These were our required features at the start of our project when designing the 
 We used these features a guideline for our project design. At this stage it is good to mention that some of these features were modified during the project.
 
 \subsection{Audio design}
+\label{sec:audio_design}
 
-TODO
+For audio we used the 3.5mm jack audio output connector on the raspberry pi with our self-built audio amplifier, which is connected to a single speaker. The single speaker can only output mono audio, but this won't matter since audio contains only speaking. The used speaker was small and low powered. We also made a simple audio jack connector. This was made with a bought 3.5mm mono jack connector, which was soldered to ground and audio.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{audio_amplifier_lm386_bb.png}
+    \caption{Breadboard view for the audio amplifier.}
+  \end{center}
+  \label{lm386_bb}
+\end{figure}
+
+In the heart of the audio amplifier stands the LM386 circuit, which is a "Low Voltage Audio Power Amplifier" and was more than enough for our use case. The figure in~\ref{lm386_bb} shows the breadboard view that we used used for the audio amplifier. The build is same to that what is shown on the LM386 datasheet, "amplifier with Gain = 200".
+
+\begin{itemize}
+  \item Between PINs 1 and 8 is a 10uF capacitor, which causes a gain on 200. In desibels this is around 20.
+  \item PIN 2 is places to ground.
+  \item PIN 3 takes the audio input, and is connected to ground through 10k ohm resistor.
+  \item PIN 4 is placed to ground.
+  \item PIN 5 is the amplified audio output.
+  \item PIN 6 takes power
+  \item PIN 7 is bybassed, doesn't take connection.
+\end{itemize}
 
 \subsection{Camera design}
 
@@ -92,6 +113,12 @@ We will also write other code, like the logical code for the whole software, thr
 
 For the implementation, we ran into few problems along the way. Implementation was divided into three separate parts: motor related stuff, audio related stuff and camera related stuff. These parts were implemented as paraller. During the implementation, few features needed some modification and later of the project timetable few "nasty" code and hacks were implemented to get the wanted results.
 
+\subsection{Audio}
+
+The implementation of the audio amplifier required bying the parts and assembling them. There weren't really any problems with this, and everything worked as was planned. Refer to chapter~\ref{sec:audio_design} for what was the plan.
+
+The speaker didn't require any assembling but was simply connected to the audio amplifier. For the case of our speaker we used a beer can. Twas used for flavor.
+
 \subsection{Motor control system}
 
 Largest modifications to the design had to be done to the motor controlling system. After implementing the planned two-motor-system, we noticed that it would be hard to create correct platform that would be aimed in two dimensions. In addition to this, we noticed that we couldn't implement the correct calculations for vertical movement during project's timetable. Thus we changed the motor system to use only horizontal motor.
@@ -111,6 +138,12 @@ Motor control's software had some changes as well. After we started to use \href
 \section{Evaluation}
 
 Motor controlling system worked well. Mainly due to the hack we made and the fact that the L293D chip is a pretty simple control chip. Using the GPIO pins is pretty straight forward with the WiringPi library. Only bad thing in the motor control system implementation is that we had to downgrade our project to use only one motor instead of two.
+
+\subsection{Audio}
+
+Audio amplifier, when connected to the speaker had suprisingly good sound and volume. Actually we had to drop to volume to one fourth of what was the full volume not to break our ears. The speaker in a can outputted a good and clear sound, better than any of us could have hoped for.
+
+However, when audio jack is not connected, and even sometimes when connected, the audio amplifier and speaker takes audible interference. A high-piched noise that eats into your mind. There were a few workarounds, that mostly was duct taping the wires together which acted as a shield for the wires.
 
 \section{Summary}
 
