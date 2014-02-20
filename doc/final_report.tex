@@ -29,11 +29,17 @@
 
 \section{Introduction}
 
-TODO
+This is a final report for the course Intelligent Embedded System (id 582711) at the CS Department of the University of Helsinki. This course was held at during Spring term 2014, third period. The course is a self-study course that consists of an embedded systems project. For our project we chose to build a Raspberry Pi robot, which utilizes Pi's camera module, audio output and electric DC motors.
+
+Raspberry Pi is a cheap arm-computer that was originally created for the purpose to help more people to get into programming. We chose to use this one-chip-computer for our project because it runs on Linux (among other operating systems), it has a camera module available, it has GPIO pins for controlling a motor control chip, and all of our team members already had one lying around.
+
+This document includes our project idea, requirements and initial design for the robot, implementation of the robot, evaluation of our project, and a summary of lessons learned. This is the tale of our awesome little raspi robot.
 
 \section{The idea}
 
-TODO
+We got our initial idea from the video game Portal by Valve Corp. In the game, there were these "cute" robot turrets that recognized movement, talked to the source of the movement and shot them. So our initial idea was to create a robot similar to these turrets, so that we will use Raspberry Pi's camera module to recognize movement, target the movement source, and play a random audio clip to greet the source of the movement.
+
+Our initial idea had two DC motors to control the turret's movement and a laser- or LED-pointer to point the target. However this idea evolved during the project just to use one motor and only turn the camera towards the movement source.
 
 \section{Requirements and initial design}
 
