@@ -127,7 +127,29 @@ Our hardware consists of Raspberry Pi v2 (512 MB model), Raspberry Pi camera mod
 
 \subsection{Sound speaker system}
 
-TODO
+For audio we used the 3.5mm jack audio output connector on the raspberry pi with our self-built audio amplifier, which is connected to a single speaker. The single speaker can only output mono audio, but this won't matter since audio contains only speaking. The used speaker was small and low powered. We also made a simple audio jack connector. This was made with a bought 3.5mm mono jack connector, which was soldered to ground and audio.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{audio_amplifier_lm386_bb.png}
+    \caption{Breadboard view for the audio amplifier.}
+  \end{center}
+  \label{lm386_bb}
+\end{figure}
+
+In the heart of the audio amplifier stands the LM386 circuit, which is a "Low Voltage Audio Power Amplifier" and was more than enough for our use case. The figure in~\ref{lm386_bb} shows the breadboard view that we used used for the audio amplifier. The build is same to that what is shown on the LM386 datasheet, "amplifier with Gain = 200".
+
+\begin{itemize}
+  \item Between PINs 1 and 8 is a 10uF capacitor, which causes a gain on 200. In desibels this is around 20.
+  \item PIN 2 is places to ground.
+  \item PIN 3 takes the audio input, and is connected to ground through 10k ohm resistor.
+  \item PIN 4 is placed to ground.
+  \item PIN 5 is the amplified audio output.
+  \item PIN 6 takes power
+  \item PIN 7 is bybassed, doesn't take connection.
+\end{itemize}
+
+There weren't really any problems in assembling hardware, and everything with it worked as was planned.
 
 \subsection{Motor control system}
 
