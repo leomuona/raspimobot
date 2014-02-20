@@ -4,10 +4,6 @@
 /* This file includes the GPIO related low level code.
    This makes the gpio pin controlling a bit easier. */
 
-/* Mandatory for everything else.
-   Returns -1 if error. */
-int init_gpio();
-
 // is pin an i/o pin? 1 = true, 0 = false
 int is_io_pin(int pin);
 
