@@ -115,4 +115,50 @@ The purpose of this algorithm is to calculate to rotation angles needed in order
 
 When motion detection algorithm has calculated the difference between two pictures, the result is passed to this rotation angle calculation algorithm. It calculates the center of difference by taking average of the most left and right pixels and average of the most bottom and top pixels. Then it calculates the relative distances to the center of the picture and edges from those pixels. As we know the angles of view for the camera module from technical specifications, the rotation angles can be calculated by multiplying the relative distances with halved angles of view.
 
+\subsection{Motor control}
+
+Motor controlling is done via Raspberry Pi's GPIO pins. To control one motor, we are using two pins that have high and low output signals. In order to control the pins, we are using \href{http://wiringpi.com/}{WiringPi C library}.
+
+At first we linked the C library into our project and included WiringPi.h. However, because it required us to run our software as root, we could not get the pulseaudio sound working at the same time. As a fix WiringPi C library is now only a system requirement and we are using system calls instead of linking the library. System calls use WiringPi's gpio commands.
+
+\section{Hardware}
+
+Our hardware consists of Raspberry Pi v2 (512 MB model), Raspberry Pi camera module, a self-made sound output speaker system and our motor system. We are using Pi's 3.5mm headphone jack for sound output and GPIO pins for motor controlling.
+
+\subsection{Sound speaker system}
+
+TODO
+
+\subsection{Motor control system}
+
+Our motor control system consists of L293D motor control chip, 10k ohm resistor, battery case for two AA batteries and a small DC motor that has gears to lower main axis angular velocity. The parts are connected to each others as shown in figure \ref{l293d_bb}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{motor_controllers_l293d_impl_bb.png}
+    \caption{Breadboard view for motor controller.}
+  \end{center}
+  \label{l293d_bb}
+\end{figure}
+
+The L293D control chip gets it's operating power (VCC1) from Raspberry Pi 5V gpio pin. It also uses the same power through the transistor to send enable signal for motor controlling unit 1. The DC motor gets it's operating power from two AA batteries (3V) via L293D control chip's VCC2 pin.
+
+\begin{table}
+  \begin{center}
+    \begin{tabular}{| l | l | l | l |}
+      \hline
+      Enable signal & Input 1A & Input 2A & Function \\ \hline
+      H & L & H & Turn right \\ \hline
+      H & H & L & Turn left \\ \hline
+	  H & L & L & Stop \\ \hline
+	  H & H & H & Stop \\ \hline
+	  L & any & any & Stop \\ \hline
+    \end{tabular}
+    \caption{L293D chip's signal table. H = High, L = Low.}
+  \end{center}
+  \label{l293d_signal_table}
+\end{table}
+
+Raspberry Pi's GPIO pins 17 and 18 (hardware pins 11 and 12) high and low signals control the motor via L293D control chip. As shown in table \ref{l293d_signal_table}, the motor will rotate only when pin signals differ from each other. The enable signal is on at all times, since it is connected with a resistor to chip's VCC1.
+
 \end{document}
