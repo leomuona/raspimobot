@@ -1,0 +1,41 @@
+\documentclass[english,11pt,twoside,a4paper]{article}
+\usepackage[left=2cm,top=1cm,right=2cm,nohead,nofoot]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\begin{document}
+\author{
+  Niemistö, Jesse
+  \and
+  Muona, Leo
+  \and
+  Hilden, Matias
+}
+\title{Evaluation}
+
+\maketitle
+
+\section{Dropped features}
+
+Due to both algorithmic and mechanical difficulties, we had to drop the vertical rotation motor.
+
+\section{Testing}
+
+We performed two kind of tests on the project: Use case tests for determing wether the prototype works as intended, and perfomance testing to measure cycle speed during rest (no motion) and calculation (motion).
+
+\subsection{Use case testing}
+
+\subsection[Performance testing}
+
+\section{Improvements}
+
+Improvements to the project can be made on software side of things. The following issues can be improved:
+
+\begin{itemize}
+  \item Slow camera usage: This issue can be resolved by implementing the used raspistill program in our own code. This can be done relatively easily as raspistill is an open source program and does not conflict with our software licensing (GPLv3). It merely requires time.
+  \item Inaccurate motion detection algorithm: This issue is a bit harder to solve, but it can propably be done by precomputing static scenery. This way we should be able to know where the moving object is instead of the algorithm showing two moving objects (starting and end location of the moving object).
+  \item 
+\end{itemize}
+
+\end{document}
