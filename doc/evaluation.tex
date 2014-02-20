@@ -68,9 +68,17 @@ The fourth use case test is a test to check maximum rotation edges. This test in
 
 Test result was successful. As a sidenote, when running the test case again, the camera moves different lengths at a time.
 
-\subsection[Performance testing}
+\subsection{Performance testing}
 
+Perfomance tests will programmically time the length picture cycles. Each cycle contains the following: taking a new picture, calculating differences between old and new pictures and calculating the rotation angle in case motion was detected. Rotation and audio playback are left out of the cycle as they depend on rotation and audio file length, thus impacting the results in a non-informative way.
 
+\textbf{No motion}
+
+The turret was set to watch a direction with no motion and the program was started. The results are as follows:
+
+\textbf{Motion}
+
+The turret was set to watch one of our project members who created motion. The results are as follows:
 
 \section{Improvements}
 
