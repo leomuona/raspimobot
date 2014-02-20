@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <signal.h>
+#include <sys/time.h>
 
 int f_logic = 0;
 
@@ -25,6 +26,9 @@ void logic_loop()
 	printf("f_logic = %d\n", f_logic);
 
 	if (f_logic){
+
+		struct timeval start;
+		gettimeofday(&start, 0);
 
 		printf("logic is enabled\n");
 		int width = 640;
@@ -56,6 +60,10 @@ void logic_loop()
 		float angles[2];
 
 		if (calc_rotation(diff, angles)) {
+			struct timeval end;
+			gettimeofday(&end, 0);
+			long tdiff = end.tv_sec*1e3 + end.tv_usec/1e3 - start.tv_sec*1e3 - start.tv_usec/1e3;
+			printf("cycle length in milliseconds: %ld\n", tdiff);
 /*
 			motion_detect_mark_frame(pic1, diff);
 			motion_detect_mark_frame(pic2, diff);
@@ -101,6 +109,12 @@ void logic_loop()
 
 			rotate_x(angles[0]);
 			take_both = 1;
+		}
+		else{
+			struct timeval end;
+			gettimeofday(&end, 0);
+			long tdiff = end.tv_sec*1e3 + end.tv_usec/1e3 - start.tv_sec*1e3 - start.tv_usec/1e3;
+			printf("cycle length in milliseconds: %ld\n", tdiff);
 		}
 
 		BMP_free(diff->first_pass);
