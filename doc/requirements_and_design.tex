@@ -98,4 +98,6 @@ In addition to camera software provided by Raspberry Pi, we will write our own s
 
 Our audio playback will be coded against pulseaudio sound server. The reason being, that it provides better API than ALSA. For example, there is \href{http://freedesktop.org/software/pulseaudio/doxygen/scache.html}{Sample cache} on the server side, which does sound optimal to what we're planning. We're planning to use ogg for audio files, but we'll see how it goes. We're not sure how much the Arm CPU of the Raspberry Pi can handle, adding ogg decoder on top of everything else might be too much. The first step is to just get somehow working nonblocking audio playback.
 
+Our motor controlling code will use either direct access to /dev/mem or if that does not work, we will use a third party open source library, like \href{http://wiringpi.com/}{WiringPi}.
+
 \end{document}
