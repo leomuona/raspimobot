@@ -9,17 +9,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 
 int f_logic = 0;
 
 int itid = 0;
 
-BMP *pic1 = 0;
-BMP *pic2 = 0;
+int take_both = 1;
+
+BMP *pic1 = NULL;
+BMP *pic2 = NULL;
 
 void logic_loop()
 {
 	printf("f_logic = %d\n", f_logic);
+
 	if (f_logic){
 
 		printf("logic is enabled\n");
@@ -30,72 +34,79 @@ void logic_loop()
 			pic1 = malloc(sizeof(BMP));
 			memset(pic1, 0, sizeof(BMP));
 			BMP_init(pic1, width, height);
-			take_pic(pic1);
 		}
-		else if (!pic2){
-			pic2 = pic1;
-			pic1 = malloc(sizeof(BMP));
-			memset(pic1, 0, sizeof(BMP));
-			BMP_init(pic1, width, height);
-			take_pic(pic1);
+		if (!pic2){
+			pic2 = malloc(sizeof(BMP));
+			memset(pic2, 0, sizeof(BMP));
+			BMP_init(pic2, width, height);
 		}
-		else{
+
+		if (take_both) {
+			take_pic(pic1);
+			take_pic(pic2);
+			take_both = 0;
+		} else {
 			BMP* bmp = pic2;
 			pic2 = pic1;
 			take_pic(bmp);
 			pic1 = bmp;
 		}
-		
-		if (pic1 && pic2){
-			DetectionDiff* diff = motion_detect(pic1, pic2, 50, 5);
 
-			float angles[2];
-			if (calc_rotation(diff, angles)){
-				motion_detect_mark_frame(pic1, diff);
-				motion_detect_mark_frame(pic2, diff);
-				motion_detect_mark_frame(diff->first_pass, diff);
-				motion_detect_mark_frame(diff->second_pass, diff);
+		DetectionDiff* diff = motion_detect(pic1, pic2, 50, 5);
+		float angles[2];
 
-				char name1[256] = {0};
-				char name2[256] = {0};
-				char name3[256] = {0};
-				char name4[256] = {0};
+		if (calc_rotation(diff, angles)) {
+/*
+			motion_detect_mark_frame(pic1, diff);
+			motion_detect_mark_frame(pic2, diff);
+			motion_detect_mark_frame(diff->first_pass, diff);
+			motion_detect_mark_frame(diff->second_pass, diff);
 
-				snprintf(name1, 256, "%d_pic1.bmp", itid);
-				snprintf(name2, 256, "%d_pic2.bmp", itid);
-				snprintf(name3, 256, "%d_first.bmp", itid);
-				snprintf(name4, 256, "%d_second.bmp", itid);
+			char name1[256] = {0};
+			char name2[256] = {0};
+			char name3[256] = {0};
+			char name4[256] = {0};
 
-				++itid;
+			snprintf(name1, 256, "%d_pic1.bmp", itid);
+			snprintf(name2, 256, "%d_pic2.bmp", itid);
+			snprintf(name3, 256, "%d_first.bmp", itid);
+			snprintf(name4, 256, "%d_second.bmp", itid);
 
-				BMP_write(pic1, name1);
-				BMP_write(pic2, name2);
-				BMP_write(diff->first_pass, name3);
-				BMP_write(diff->second_pass, name4);
+			++itid;
 
-				printf("detected motion, horizontal rotation = %f radians\n", angles[0]);
-				printf("detected motion, vertical rotation = %f radians\n", angles[1]);
-				// set both pic pointers to NULL
-				BMP_free(pic1);
-				BMP_free(pic2);
-				free(pic1);
-				free(pic2);
-				pic1 = NULL;
-				pic2 = NULL;
+			BMP_write(pic1, name1);
+			BMP_write(pic2, name2);
+			BMP_write(diff->first_pass, name3);
+			BMP_write(diff->second_pass, name4);
+*/
+			printf("detected motion, horizontal rotation = %f radians\n", angles[0]);
+			printf("detected motion, vertical rotation = %f radians\n", angles[1]);
 
-				if (!is_playing()) {
-					play_random_sample();
-				}
-
-				rotate_x(angles[0]);
+			if (!is_playing()) {
+				play_random_sample();
 			}
 
-			BMP_free(diff->first_pass);
-			BMP_free(diff->second_pass);
-			free(diff);
+			if (is_playing()) {
+				int slept = 0;
+				int max_sleep = 3000;
+				while (slept < max_sleep && is_playing()) {
+					delayms(1000);
+					slept += 1000;
+				}
+
+				if (is_playing()) {
+					kill(0, SIGINT);
+				}
+			}
+
+			rotate_x(angles[0]);
+			take_both = 1;
 		}
-	}
-	else{
+
+		BMP_free(diff->first_pass);
+		BMP_free(diff->second_pass);
+		free(diff);
+	} else {
 		printf("logic is disabled\n");
 		sleep(1);
 	}

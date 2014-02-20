@@ -36,6 +36,8 @@ int take_pic(BMP *bmp)
 		return -1;
 	}
 
+	pclose(pf);
+
 	char header[54] = {0};
 	read_output(pf, 54, header);
 	read_output(pf, bmp->data_size, bmp->data);
