@@ -72,13 +72,61 @@ Test result was successful. As a sidenote, when running the test case again, the
 
 Perfomance tests will programmically time the length picture cycles. Each cycle contains the following: taking a new picture, calculating differences between old and new pictures and calculating the rotation angle in case motion was detected. Rotation and audio playback are left out of the cycle as they depend on rotation and audio file length, thus impacting the results in a non-informative way.
 
+The time used by the program "raspistill" was externally measured to be around 1200 milliseconds. This result is used when analyzing cycle performance below.
+
 \textbf{No motion}
 
-The turret was set to watch a direction with no motion and the program was started. The results are as follows:
+The turret was set to watch a direction with no motion and the program was started. The results in table \ref{cycle_times_no_motion}
+
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{| l | l |}
+      \hline
+      Cycle number & Length in milliseconds \\ \hline
+      01 & 3101 \\ \hline
+      02 & 1927 \\ \hline
+      03 & 1929 \\ \hline
+      04 & 1930 \\ \hline
+      05 & 1927 \\ \hline
+      06 & 1928 \\ \hline
+      07 & 1933 \\ \hline
+      08 & 1959 \\ \hline
+      09 & 1928 \\ \hline
+      10 & 1943 \\ \hline
+    \end{tabular}
+    \caption{Cycle times with no motion}
+  \end{center}
+  \label{cycle_times_no_motion}
+\end{table}
+
+The first cycle takes approximately twice as long as other cycles because the program takes two pictures in a row. Excluding that first cycle, the cycle time average is 1927 milliseconds. As the raspistill call takes about 1200 milliseconds, our difference calculation algorithm seems to take about 700 milliseconds. Cycle time is more than we would like, but still within acceptable limits.
 
 \textbf{Motion}
 
-The turret was set to watch one of our project members who created motion. The results are as follows:
+The turret was set to watch one of our project members who created motion. The results are in table \ref{cycle_times_motion}
+
+\begin{table}[ht]
+  \begin{center}
+    \begin{tabular}{| l | l |}
+      \hline
+      Cycle number & Length in milliseconds \\ \hline
+      01 & 3101 \\ \hline
+      02 & 3196 \\ \hline
+      03 & 3131 \\ \hline
+      04 & 3192 \\ \hline
+      05 & 3147 \\ \hline
+      06 & 3169 \\ \hline
+      07 & 3201 \\ \hline
+      08 & 3161 \\ \hline
+      09 & 3207 \\ \hline
+      10 & 3193 \\ \hline
+    \end{tabular}
+    \caption{Cycle times with motion}
+  \end{center}
+  \label{cycle_times_motion}
+\end{table}
+
+This time all cycles need to take two pictures in a row. This is because we have to reset the taken pictures after detecting motion (this is because the pictures no longer represent a still state and the camera has also rotated). Cycle time with motion averages to 3483 milliseconds, of which 2400 milliseconds are taken by raspistill calls. This leaves about 700 milliseconds for difference calculation and 300 milliseconds for rotation calculation. Here the cycle time is definately more than we would like.
 
 \section{Improvements}
 
@@ -87,7 +135,7 @@ Improvements to the project can be made on software side of things. The followin
 \begin{itemize}
   \item Slow camera usage: This issue can be resolved by implementing the used raspistill program in our own code. This can be done relatively easily as raspistill is an open source program and does not conflict with our software licensing (GPLv3). It merely requires time.
   \item Inaccurate motion detection algorithm: This issue is a bit harder to solve, but it can propably be done by precomputing static scenery. This way we should be able to know where the moving object is instead of the algorithm showing two moving objects (starting and end location of the moving object).
-  \item Low audio quality: Resolving this issue requires a firmware fix to the Raspberry Pi. Should such fix be made available, we can easily update it to our project.
+  \item Unstable audio calls: Resolving this issue requires a firmware fix to the Raspberry Pi. Should such fix be made available, we can easily update it to our project.
 \end{itemize}
 
 \end{document}
