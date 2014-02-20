@@ -26,6 +26,48 @@ We performed two kind of tests on the project: Use case tests for determing weth
 
 \subsection{Use case testing}
 
+Use case testing is done in a room where at the start of the test the system has been initialized and program ran. Motor rotation at the initialization should be at the center of robot. Use case tests are identified with UC-prefix and index number suffix.
+
+\textbf{UC-1: No motion test}
+
+The first use case test is a test where no movement is at camera's field of view. The correct result is camera taking pictures (indicated via red blinking light) and no movement by the motor or sound from the audio system is played. The test result was successful. 
+
+\textbf{UC-2: Horizontal motion test}
+
+The second use case test is a test where there is a single horizontal movement at camera's field of view. Correct result contains the following characteristics:
+
+\begin{itemize}
+  \item Camera: Takes two pictures from which the movement is recognized. Then halts the picture taking for the time of motor rotation.
+  \item Sound: A random sound clip is played to greet the person who has done the movement.
+  \item Motor: Motor axis rotates so that camera targets center of the detected movement.
+\end{itemize}
+
+The test result was "okay". That is, the correct motor rotation was made and soundclip was played. However targetting is not very accurate.
+
+\textbf{UC-3: Vertical motion test}
+
+The third use case test is a test where there is a single vertical movement at camera's field of view. Correct result contains the following characteristics:
+
+\begin{itemize}
+  \item Camera: Takes two pictures from which the movement is recognized. Then halts the picture taking for the time of motor rotation.
+  \item Sound: A random sound clip is played to greet the person who has done the movement.
+  \item Motor: Motor axis rotates so that camera targets center of the detected movement.
+\end{itemize}
+
+The test result was "okay". Rotation was made towards the correct spot and soundclip was played. However targetting is not very accurate.
+
+\textbf{UC-4: Maximum rotation test}
+
+The fourth use case test is a test to check maximum rotation edges. This test includes movement done first on the left side of the camera, just in camera's field of view, multiple times untill camera no longer rotates to left. Then, same is done at the right side of the camera's field of view untill camera has turned multiple times untill camera no longer rotates to right. Test case correct result includes the following:
+
+\begin{itemize}
+  \item Camera: Takes pictures every time movement is recognized.
+  \item Sound: Plays audio clip every time movement is recognized.
+  \item Motor: Camera turns left multiple times when movement is recognized, then stops at 30 degrees from the center, which is the safe limit. When movement is done at the right side of camera, camera turns right multiple times when movement is recognized, then stops at 30 degrees from the center, which is the safe limit.
+\end{itemize}
+
+Test result was successful. As a sidenote, when running the test case again, the camera moves different lengths at a time.
+
 \subsection[Performance testing}
 
 \section{Improvements}
