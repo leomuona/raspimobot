@@ -203,9 +203,18 @@ static void context_state_callback(pa_context *c, void *userdata)
 			ctx->stream = pa_stream_new(c, stream_name, &ctx->sample_spec, NULL);
 			assert(ctx->stream);
 
+			pa_buffer_attr bufattr;
+			bufattr.fragsize = (uint32_t)-1;
+			bufattr.maxlength = (uint32_t) -1;
+			bufattr.minreq = pa_usec_to_bytes(0, &ctx->sample_spec);;
+			bufattr.prebuf = (uint32_t)-1;
+			bufattr.tlength = (int32_t) -1;
+
 			pa_stream_set_state_callback(ctx->stream, stream_state_callback, userdata);
 			pa_stream_set_write_callback(ctx->stream, stream_write_callback, userdata);
-			pa_stream_connect_playback(ctx->stream, device, NULL, 0, pa_cvolume_set(&cv, ctx->sample_spec.channels, volume), NULL);
+			pa_stream_connect_playback(ctx->stream, device, &bufattr,
+				PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_ADJUST_LATENCY | PA_STREAM_AUTO_TIMING_UPDATE,
+				pa_cvolume_set(&cv, ctx->sample_spec.channels, volume), NULL);
 			break;
 		}
 
