@@ -134,8 +134,9 @@ Improvements to the project can be made on software side of things. The followin
 
 \begin{itemize}
   \item Slow camera usage: This issue can be resolved by implementing the used raspistill program in our own code. This can be done relatively easily as raspistill is an open source program and does not conflict with our software licensing (GPLv3). It merely requires time.
-  \item Inaccurate motion detection algorithm: This issue is a bit harder to solve, but it can propably be done by precomputing static scenery. This way we should be able to know where the moving object is instead of the algorithm showing two moving objects (starting and end location of the moving object).
+  \item Inaccurate motion detection algorithm: This issue is a bit harder to solve, but it can propably be done by precomputing static scenery and/or a set of three pictures for difference calculation. This way we should be able to know where the moving object is instead of the algorithm showing two moving objects (starting and end location of the moving object).
   \item Unstable audio calls: Resolving this issue requires a firmware fix to the Raspberry Pi. Should such fix be made available, we can easily update it to our project.
+  \item Remote control: This is more a new feature than an existing issue. Remote control via network connection is easy to implement and allows some interesting use cases.
 \end{itemize}
 
 \end{document}
