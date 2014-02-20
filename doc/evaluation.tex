@@ -32,29 +32,29 @@ Use case testing is done in a room where at the start of the test the system has
 
 The first use case test is a test where no movement is at camera's field of view. The correct result is camera taking pictures (indicated via red blinking light) and no movement by the motor or sound from the audio system is played. The test result was successful. 
 
-\textbf{UC-2: Horizontal motion test}
+\textbf{UC-2: Left-side motion test}
 
-The second use case test is a test where there is a single horizontal movement at camera's field of view. Correct result contains the following characteristics:
+The second use case test is a test where there is a single movement at left side of camera's field of view. Correct result contains the following characteristics:
 
 \begin{itemize}
   \item Camera: Takes two pictures from which the movement is recognized. Then halts the picture taking for the time of motor rotation.
   \item Sound: A random sound clip is played to greet the person who has done the movement.
-  \item Motor: Motor axis rotates so that camera targets center of the detected movement.
+  \item Motor: Motor axis rotates the camera to left so that the center of camera points at movement spot.
 \end{itemize}
 
 The test result was "okay". That is, the correct motor rotation was made and soundclip was played. However targetting is not very accurate.
 
-\textbf{UC-3: Vertical motion test}
+\textbf{UC-3: Right-side motion test}
 
-The third use case test is a test where there is a single vertical movement at camera's field of view. Correct result contains the following characteristics:
+The third use case test is a test where there is a single movement at right side of camera's field of view. Correct result contains the following characteristics:
 
 \begin{itemize}
   \item Camera: Takes two pictures from which the movement is recognized. Then halts the picture taking for the time of motor rotation.
   \item Sound: A random sound clip is played to greet the person who has done the movement.
-  \item Motor: Motor axis rotates so that camera targets center of the detected movement.
+  \item Motor: Motor axis rotates the camera to right so that center of camera points at movement spot.
 \end{itemize}
 
-The test result was "okay". Rotation was made towards the correct spot and soundclip was played. However targetting is not very accurate.
+The test result was "okay". Rotation was made towards the correct spot and soundclip was played. However, like in previous test, targetting is not very accurate.
 
 \textbf{UC-4: Maximum rotation test}
 
