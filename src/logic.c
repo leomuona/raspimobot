@@ -62,7 +62,7 @@ void logic_loop()
 		if (calc_rotation(diff, angles)) {
 			struct timeval end;
 			gettimeofday(&end, 0);
-			long tdiff = end.tv_sec + end.tv_usec/1e6 - start.tv_sec - start.tv_usec/1e6;
+			long tdiff = end.tv_sec*1e3 + end.tv_usec/1e3 - start.tv_sec*1e3 - start.tv_usec/1e3;
 			printf("cycle length in milliseconds: %ld\n", tdiff);
 /*
 			motion_detect_mark_frame(pic1, diff);
