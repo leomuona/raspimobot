@@ -26,13 +26,8 @@ struct motor x_motor = {0, 1}; // GPIO0 = hardware 11 & GPIO1 hardware 12
 
 int init_motors()
 {
-	int result = init_gpio();
-	if (result < 0) {
-		printf("Initializing GPIO failed with code %d\n", result);
-		return -1;
-	}
 	// enable output pins
-	result = 0;
+	int result = 0;
 	if (enable_output(x_motor.a) < 0) result = -1;
 	if (enable_output(x_motor.b) < 0) result = -1;
 	if (result < 0) {
@@ -48,14 +43,15 @@ int init_motors()
 
 float safe_rad(float rad)
 {
-	printf("safe_rad(): input = %f rad\n", rad);
-	printf("safe_rad(): x_motor_delta = %f rad", x_motor_delta);
 	if (x_motor_delta + rad > X_MOTOR_DELTA_MAX) {
+		printf("DEBUG safe_rad: changing rad %f -> %f\n",
+			rad, (X_MOTOR_DELTA_MAX - x_motor_delta));
 		rad = X_MOTOR_DELTA_MAX - x_motor_delta;
 	} else if (x_motor_delta + rad < -X_MOTOR_DELTA_MAX) {
+		printf("DEBUG safe_rad: changing rad %f -> %f\n",
+			rad, -(X_MOTOR_DELTA_MAX + x_motor_delta));
 		rad = -(X_MOTOR_DELTA_MAX + x_motor_delta);
 	}
-	printf("safe_rad(): output = %f rad\n", rad);
 	return rad;
 }
 
@@ -74,13 +70,13 @@ void rotate_x(float rad)
 	float time = rad / X_MOTOR_ANG_V;
 	
 	if (turn_left) {
-		printf("turning LEFT %f seconds\n", time);
+		printf("DEBUG rotate_x: turning LEFT %f seconds\n", time);
 		set_low(x_motor.a);
 		set_high(x_motor.b);
 		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.b);
 	} else {
-		printf("turning RIGHT %f seconds\n", time);
+		printf("DEBUG rotate_x: turning RIGHT %f seconds\n", time);
 		set_low(x_motor.b);
 		set_high(x_motor.a);
 		delayms((int) (time * 1000)); // msec
