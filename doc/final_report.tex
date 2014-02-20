@@ -105,11 +105,13 @@ Figure \ref{l293d_bb_design} shows how the chips would be connected into the Ras
 
 \subsection{Software design}
 
-Our project requires software for three main things: camera control, audio control and motor control. Even though we use a ready-to-use software to take pictures with the camera, we need to write our own software for image analysis, that is used to detect movement in the camera. We will write our own audio playback code against pulseaudio sound server. As for sound files, we are planning to use .ogg files. For the motor controlling we plan to use either direct /dev/mem code, or an additional WiringPi gpio library to control the GPIO pins.
+Our project requires software for three main things: camera control, audio control and motor control. Even though we use a ready-to-use software to take pictures with the camera, we need to write our own software for image analysis, that is used to detect movement in the camera. We will write our own audio playback code against pulseaudio sound server. As for sound files, we are planning to use .ogg files. For the motor controlling we plan to use either direct /dev/mem code, or an additional \href{http://wiringpi.com}{WiringPi gpio library} to control the GPIO pins.
 
-We will also write other code, like the logical code for the whole software, and a remote control code for testing purposes. And hopefully we don't need to write multiple hacks.
+We will also write other code, like the logical code for the whole software, threading for different parts, and a remote control code for testing purposes. And hopefully we don't need to write multiple hacks.
 
 \section{Implementation}
+
+For the implementation, we ran into few problems along the way. Implementation was divided into three separate parts: motor related stuff, audio related stuff and camera related stuff. These parts were implemented as paraller. During the implementation, few features needed some modification and later of the project timetable few "nasty" code and hacks were implemented to get the wanted results.
 
 \subsection{Audio}
 
@@ -117,7 +119,25 @@ The implementation of the audio amplifier required bying the parts and assemblin
 
 The speaker didn't require any assembling but was simply connected to the audio amplifier. For the case of our speaker we used a beer can. Twas used for flavor.
 
+\subsection{Motor control system}
+
+Largest modifications to the design had to be done to the motor controlling system. After implementing the planned two-motor-system, we noticed that it would be hard to create correct platform that would be aimed in two dimensions. In addition to this, we noticed that we couldn't implement the correct calculations for vertical movement during project's timetable. Thus we changed the motor system to use only horizontal motor.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{motor_controllers_l293d_impl_bb.png}
+    \caption{Motor controller implementation in breadboard view.}
+  \end{center}
+  \label{l293d_bb_impl}
+\end{figure}
+
+The hardware implementation of our motor system is shown in figure \ref{l293d_bb_impl}. The AA batteries now have to supply only one motor, and we had to implement code for only two GPIO pins. The L293D motor control chip we used gets it's VCC1 power from Raspberry Pi's 5V pin, and uses that same line trought a 10k ohm resistor to give the enable signal for our motor chip.
+
+Motor control's software had some changes as well. After we started to use \href{http://wiringpi.com}{WiringPi library} the software had to be run as root, as it was WiringPi's requirement. This caused us some problems with pulseaudio, which has a lot of problems when run as root. A fix to this was to remove WiringPi linking from our software and add WiringPi library only as a system requirement. That is, it should be installed on the Raspberry Pi normally. Then we used system calls to use gpio-program, that was bundled with WiringPi and could be run in non-root environments. This is one of the hacks we had to do to get things working.
+
 \section{Evaluation}
+
+Motor controlling system worked well. Mainly due to the hack we made and the fact that the L293D chip is a pretty simple control chip. Using the GPIO pins is pretty straight forward with the WiringPi library. Only bad thing in the motor control system implementation is that we had to downgrade our project to use only one motor instead of two.
 
 \subsection{Audio}
 
