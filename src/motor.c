@@ -10,12 +10,9 @@
 #define M_PI 3.14159265f
 #endif
 
-// starting motor input lag in milliseconds
-#define X_MOTOR_LAG_MS 10
-
 // angular velocities of motors
 #define X_MOTOR_ANG_V 1.337f
-#define X_MOTOR_DELTA_MAX (M_PI/6)
+#define X_MOTOR_DELTA_MAX (M_PI/8)
 
 // motor radius delta
 float x_motor_delta = 0.0f;
@@ -51,34 +48,42 @@ int init_motors()
 
 float safe_rad(float rad)
 {
+	printf("safe_rad(): input = %f rad\n", rad);
+	printf("safe_rad(): x_motor_delta = %f rad", x_motor_delta);
 	if (x_motor_delta + rad > X_MOTOR_DELTA_MAX) {
 		rad = X_MOTOR_DELTA_MAX - x_motor_delta;
 	} else if (x_motor_delta + rad < -X_MOTOR_DELTA_MAX) {
 		rad = -(X_MOTOR_DELTA_MAX + x_motor_delta);
 	}
+	printf("safe_rad(): output = %f rad\n", rad);
 	return rad;
 }
 
 void rotate_x(float rad)
 {
-	int turn_right = 1;
+	int turn_left = 0;
 	rad = safe_rad(rad);
+	if (rad == 0)
+		return;
+	
 	x_motor_delta += rad;
 	if (rad < 0) {
 		rad = -rad;
-		turn_right = 0;
+		turn_left = 1;
 	}
 	float time = rad / X_MOTOR_ANG_V;
 	
-	if (turn_right) {
+	if (turn_left) {
+		printf("turning LEFT %f seconds\n", time);
 		set_low(x_motor.a);
 		set_high(x_motor.b);
-		delayms((int) (time * 1000) + X_MOTOR_LAG_MS); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.b);
 	} else {
+		printf("turning RIGHT %f seconds\n", time);
 		set_low(x_motor.b);
 		set_high(x_motor.a);
-		delayms((int) (time * 1000) + X_MOTOR_LAG_MS); // msec
+		delayms((int) (time * 1000)); // msec
 		set_low(x_motor.a);
 	}
 }

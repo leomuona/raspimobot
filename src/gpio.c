@@ -6,10 +6,10 @@
 
 int init_gpio()
 {
-	if (wiringPiSetup() == -1) {
+	/*if (wiringPiSetup() == -1) {
 		printf("Error: wiringPiSetup() returned an error code.\n");
 		return -1;
-	}
+	}*/
 	return 0;
 }
 
@@ -29,7 +29,11 @@ int enable_output(int pin)
 		printf("Error: pin %d is not allowed i/o pin\n", pin);
 		return -1;
 	}
-	pinMode(pin, OUTPUT);
+	//pinMode(pin, OUTPUT);
+	char cmd[255] = {0};
+	sprintf(cmd, "gpio mode %d out", pin);
+        system(cmd);
+
 	return 0;
 }
 
@@ -39,7 +43,10 @@ int set_high(int pin)
                 printf("Error: pin %d is not allowed i/o pin\n", pin);
                 return -1;
         }
-	digitalWrite(pin, 1); // on/high
+	//digitalWrite(pin, 1); // on/high
+	char cmd[255] = {0};
+	sprintf(cmd, "gpio write %d 1", pin);
+        system(cmd);
 	return 0;
 }
 
@@ -49,7 +56,10 @@ int set_low(int pin)
                 printf("Error: pin %d is not allowed i/o pin\n", pin);
                 return -1;
         }
-	digitalWrite(pin, 0); // off/low
-        return 0;
+	//digitalWrite(pin, 0); // off/low
+	char cmd[255] = {0};
+	sprintf(cmd, "gpio write %d 0", pin);
+        system(cmd);
+	return 0;
 }
 
