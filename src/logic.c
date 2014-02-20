@@ -90,8 +90,8 @@ void logic_loop()
 				int slept = 0;
 				int max_sleep = 3000;
 				while (slept < max_sleep && is_playing()) {
-					delayms(1000);
-					slept += 1000;
+					delayms(100);
+					slept += 100;
 				}
 
 				if (is_playing()) {
