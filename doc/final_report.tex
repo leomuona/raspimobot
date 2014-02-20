@@ -43,7 +43,50 @@ Our initial idea had two DC motors to control the turret's movement and a laser-
 
 \section{Requirements and initial design}
 
+At the start of our project we wrote our requirements and then initial design. The design consists more on actual planning of hardware part, than the code to be created. This section can be divided into five parts: required features, audio system design, camera design, motor control system design, and software design.
+
+\subsection{Required features}
+
+These were our required features at the start of our project when designing the robot:
+
+\begin{itemize}
+  \item Horizontal and vertical rotational movement.
+  \item WAV (or ogg) audio playback.
+  \item Motion detection based on frame difference algorithm.
+  \item Aiming at detected movement.
+  \item Remote control.
+  \item Works on top of Linux.
+\end{itemize}
+
+We used these features a guideline for our project design. At this stage it is good to mention that some of these features were modified during the project.
+
+\subsection{Audio design}
+
 TODO
+
+\subsection{Camera design}
+
+We decided to use a simple plug-in Raspberry Pi camera module, which we will use to take pictures that we compare to previous ones to detect movement. Since Raspberry Pi has a ready-to-use socket for camera cable, no extra cables or power supplies are needed. To use the camera we will use \href{https://github.com/raspberrypi/userland}{Pi's Userland code}, that comes with raspistill-program which we can use to take still pictures.
+
+\subsection{Motor control design}
+
+To control the motors, we planned our design around L293D motor control chip, which is cheap and easily available. Our design consisted of two motors, one to turn the camera horizontally and one to turn the camera vertically. This design used two L293D chips, one for each motor.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.75]{motor_controllers_l293d_bb.png}
+    \caption{Motor controllers design in breadboard view.}
+  \end{center}
+  \label{l293d_bb_design}
+\end{figure}
+
+Figure \ref{l293d_bb_design} shows how the chips would be connected into the Raspberry Pi. Design uses GPIO pins 17 and 18 to control the first motor and pins 22 and 23 to control the second motor. The two AA batteries will supply power for both of the motors, and Raspberry Pi will supply power for the motor control chips.
+
+\subsection{Software design}
+
+Our project requires software for three main things: camera control, audio control and motor control. Even though we use a ready-to-use software to take pictures with the camera, we need to write our own software for image analysis, that is used to detect movement in the camera. We will write our own audio playback code against pulseaudio sound server. As for sound files, we are planning to use .ogg files. For the motor controlling we plan to use either direct /dev/mem code, or an additional WiringPi gpio library to control the GPIO pins.
+
+We will also write other code, like the logical code for the whole software, and a remote control code for testing purposes. And hopefully we don't need to write multiple hacks.
 
 \section{Implementation}
 
