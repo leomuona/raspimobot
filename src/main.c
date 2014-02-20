@@ -13,6 +13,8 @@
 
 int main(int argc, char **argv)
 {
+	srand(time(NULL));
+
 	remote_init();
 	
 	enable_logic();
@@ -22,10 +24,6 @@ int main(int argc, char **argv)
 
 	while(1){
 		logic_loop();
-	}
-
-	while (is_playing()) {
-		usleep(10000);
 	}
 
 	return 0;
