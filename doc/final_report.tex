@@ -29,7 +29,7 @@
 
 \section{Introduction}
 
-This is a final report for the course Intelligent Embedded System (id 582711) at the CS Department of the University of Helsinki. This course was held at during Spring term 2014, third period. The course is a self-study course that consists of an embedded systems project. For our project we chose to build a Raspberry Pi robot, which utilizes Pi's camera module, audio output and electric DC motors.
+This is a final report for the course Intelligent Embedded System (id 582711) at the CS Department of the University of Helsinki. This course was held during Spring term 2014, third period. The course is a self-study course that consists of an embedded systems project. For our project we chose to build a Raspberry Pi robot, which utilizes Pi's camera module, audio output and electric DC motors.
 
 Raspberry Pi is a cheap arm-computer that was originally created for the purpose to help more people to get into programming. We chose to use this one-chip-computer for our project because it runs on Linux (among other operating systems), it has a camera module available, it has GPIO pins for controlling a motor control chip, and all of our team members already had one lying around.
 
@@ -43,11 +43,11 @@ Our initial idea had two DC motors to control the turret's movement and a laser-
 
 \section{Requirements and initial design}
 
-At the start of our project we wrote our requirements and then initial design. The design consists more on actual planning of hardware part, than the code to be created. This section can be divided into five parts: required features, audio system design, camera design, motor control system design, and software design.
+At the start of our project we wrote our requirements and then initial design. The design consists more on actual planning of hardware part than the code to be created. This section can be divided into five parts: required features, audio system design, camera design, motor control system design, and software design.
 
 \subsection{Required features}
 
-These were our required features at the start of our project when designing the robot:
+These were the required features at the start of our project when designing the robot:
 
 \begin{itemize}
   \item Horizontal and vertical rotational movement.
@@ -63,7 +63,7 @@ We used these features a guideline for our project design. At this stage it is g
 \subsection{Audio design}
 \label{sec:audio_design}
 
-For audio we used the 3.5mm jack audio output connector on the raspberry pi with our self-built audio amplifier, which is connected to a single speaker. The single speaker can only output mono audio, but this won't matter since audio contains only speaking. The used speaker was small and low powered. We also made a simple audio jack connector. This was made with a bought 3.5mm mono jack connector, which was soldered to ground and audio.
+For audio we used the 3.5mm jack audio output connector on the Raspberry Pi with our self-built audio amplifier, which is connected to a single speaker. The single speaker can only output mono audio, but this won't matter since audio contains only speaking. The used speaker was small and low powered. We also made a simple audio jack connector. This was made with a bought 3.5mm mono jack connector, which was soldered to ground and audio.
 
 \begin{figure}
   \begin{center}
@@ -139,6 +139,10 @@ The hardware implementation of our motor system is shown in figure \ref{l293d_bb
 
 Motor control's software had some changes as well. After we started to use \href{http://wiringpi.com}{WiringPi library} the software had to be run as root, as it was WiringPi's requirement. This caused us some problems with pulseaudio, which has a lot of problems when run as root. A fix to this was to remove WiringPi linking from our software and add WiringPi library only as a system requirement. That is, it should be installed on the Raspberry Pi normally. Then we used system calls to use gpio-program, that was bundled with WiringPi and could be run in non-root environments. This is one of the hacks we had to do to get things working.
 
+\subsection{Camera}
+
+Implementing the taking of pictures was not a problem due to the usage of raspistill-program. The program turned to not be optimal for continual usage but served our purposes well enough. Image difference calculation and rotation angle calculation were purely mathematical algorithms and thus did not need to interact with Raspberry Pi hardware. This made their implementation quite straightforward.
+
 \section{Evaluation}
 
 Motor controlling system worked well. Mainly due to the hack we made and the fact that the L293D chip is a pretty simple control chip. Using the GPIO pins is pretty straight forward with the WiringPi library. Only bad thing in the motor control system implementation is that we had to downgrade our project to use only one motor instead of two.
@@ -154,5 +158,15 @@ The software side of the Audio, when coupled with the hacks it required, works q
 The project started with a funny idea. And the idea continued to live on through the project. Thus all team members agree that this project a great success. There were few hacks along the way and few features had to be modified or dropped, but the robot still was quite similar as the initial idea. Our internal project timetable actually went pretty badly, because implementation took way more time than we originally though. However we were able to get the robot in a complete state.
 
 When analyzing the keys to success, this that comes to mind is the fact that all team members knew each others beforehand, and the project was really fun to work with. Also the amount of documentation for the Raspberry Pi helped alot.
+
+\section{Links}
+
+\begin{itemize}
+  \item Demonstration video: \url{http://www.youtube.com/watch?v=bQQ_EZM07OI}
+  \item Project github repository: \url{https://github.com/domewolf/raspimobot}
+  \item Raspberry Pi userland repository (contains raspistill): \url{https://github.com/raspberrypi/userland}
+  \item WiringPi homepage: \url{https://projects.drogon.net/raspberry-pi/wiringpi/}
+  \item Raspberry Pi documentations: \url{http://elinux.org/RPi_Hub}
+\end{itemize}
 
 \end{document}
