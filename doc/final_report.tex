@@ -119,6 +119,10 @@ The implementation of the audio amplifier required bying the parts and assemblin
 
 The speaker didn't require any assembling but was simply connected to the audio amplifier. For the case of our speaker we used a beer can. Twas used for flavor.
 
+The software part wasn't that easy. We used Pulseaudio audio system for interacting with the underlying audio hardware. We decided to use the Pulseaudio provided Threaded API, as we wanted to play sounds in a non-blocking way. The Initial implementation worked well on test cases, and on development computers. However, when moved to the actual enviroment, which was Raspberry Pi under load, the problems started. Firstly, Pulseaudio allows under no conditions connections from a root user. This caused a few problems as our software at the time required root user (wiring Pi actually). After working around this (dropping root), we noticed that audio was crackling as Raspberry Pi couldn't handle all the load. This required making some things sleep during audio playback.
+
+This wasn't all thought. It seems that at least on the current Raspberry Pi board something with the audio driver or Pulseaudio was bugging, and the whole audio playback would jam for some unknown reason. Working around this actually required a erally evil workaround. Luckily all our samples were really short (under three seconds), so if we notice that three seconds has passed by and our audio subsystem says it is still playing, we send SIGINT to pulseaudio to kill the connection. This made it possible that our robot is able to continue its smooth operation.
+
 \subsection{Motor control system}
 
 Largest modifications to the design had to be done to the motor controlling system. After implementing the planned two-motor-system, we noticed that it would be hard to create correct platform that would be aimed in two dimensions. In addition to this, we noticed that we couldn't implement the correct calculations for vertical movement during project's timetable. Thus we changed the motor system to use only horizontal motor.
@@ -139,11 +143,11 @@ Motor control's software had some changes as well. After we started to use \href
 
 Motor controlling system worked well. Mainly due to the hack we made and the fact that the L293D chip is a pretty simple control chip. Using the GPIO pins is pretty straight forward with the WiringPi library. Only bad thing in the motor control system implementation is that we had to downgrade our project to use only one motor instead of two.
 
-\subsection{Audio}
-
-Audio amplifier, when connected to the speaker had suprisingly good sound and volume. Actually we had to drop to volume to one fourth of what was the full volume not to break our ears. The speaker in a can outputted a good and clear sound, better than any of us could have hoped for.
+Audio amplifier, when connected to the speaker had suprisingly good sound and volume. Actually we had to drop the volume to one fourth of what was the full volume not to break our ears. The speaker in a can outputted a good and clear sound, better than any of us could have hoped for.
 
 However, when audio jack is not connected, and even sometimes when connected, the audio amplifier and speaker takes audible interference. A high-piched noise that eats into your mind. There were a few workarounds, that mostly was duct taping the wires together which acted as a shield for the wires.
+
+The software side of the Audio, when coupled with the hacks it required, works quite well. At times one can notice that the hardware can't really handle all the load, and audio makes a few cracks. We really shouldn't also have used Pulseaudio Threaded API. This mostly adds overhead, especially since Raspberry Pi is a single processor system.
 
 \section{Summary}
 
