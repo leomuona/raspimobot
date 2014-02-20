@@ -68,7 +68,17 @@ The fourth use case test is a test to check maximum rotation edges. This test in
 
 Test result was successful. As a sidenote, when running the test case again, the camera moves different lengths at a time.
 
-\subsection[Performance testing}
+\subsection{Performance testing}
+
+Perfomance tests will programmically time the length picture cycles. Each cycle contains the following: taking a new picture, calculating differences between old and new pictures and calculating the rotation angle in case motion was detected. Rotation and audio playback are left out of the cycle as they depend on rotation and audio file length, thus impacting the results in a non-informative way.
+
+\textbf{No motion}
+
+The turret was set to watch a direction with no motion and the program was started. The results are as follows:
+
+\textbf{Motion}
+
+The turret was set to watch one of our project members who created motion. The results are as follows:
 
 \section{Improvements}
 
@@ -77,7 +87,7 @@ Improvements to the project can be made on software side of things. The followin
 \begin{itemize}
   \item Slow camera usage: This issue can be resolved by implementing the used raspistill program in our own code. This can be done relatively easily as raspistill is an open source program and does not conflict with our software licensing (GPLv3). It merely requires time.
   \item Inaccurate motion detection algorithm: This issue is a bit harder to solve, but it can propably be done by precomputing static scenery. This way we should be able to know where the moving object is instead of the algorithm showing two moving objects (starting and end location of the moving object).
-  \item 
+  \item Low audio quality: Resolving this issue requires a firmware fix to the Raspberry Pi. Should such fix be made available, we can easily update it to our project.
 \end{itemize}
 
 \end{document}
